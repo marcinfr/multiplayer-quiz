@@ -1,11 +1,12 @@
 <?php
 
+require_once('model/data_object.php');
 require_once('model/db.php');
 require_once('model/quiz.php');
 
-
-class Game
+class Game extends DataObject
 {
+    protected string $table = 'game';
     private $games = [];
 
     public function getByPlayer($player)
@@ -33,24 +34,6 @@ class Game
             }
         }
         return $game->players;
-    }
-
-    public function update($game, $data)
-    {
-        $db = app(DB::class);
-        $connection = $db->getConnection();
-        $update = [];
-        foreach ($data as $key => $value) {
-            if (is_string($value)) {
-                $value = $connection->real_escape_string($value);
-                $value = '"' . $value . '"';
-            }
-            $update[] = $key . '=' . $value;
-        }
-        $update = implode(',', $update);
-
-        $sql = 'update game set ' . $update . ' where id = ' . $game->id;
-        $connection->query($sql);
     }
 
     public function getQuestion($game)

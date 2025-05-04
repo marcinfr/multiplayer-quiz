@@ -22,18 +22,7 @@
                 <div id="question-text"></div>
             </div>
             <div id="section-answers" class="section" style="display:none">
-                <div class="col-50">
-                    <a href="#" class="answer"><span id="answer-0"></span></a>
-                </div>
-                <div class="col-50">
-                    <a href="#" class="answer"><span id="answer-1"></span></a>
-                </div>
-                <div class="col-50">
-                    <a href="#" class="answer"><span id="answer-2"></span></a>
-                </div>
-                <div class="col-50">
-                    <a href="#" class="answer"><span id="answer-3"></span></a>
-                </div>
+                <div id="answers-list"></div>
             </div>
         </div>
         <script>

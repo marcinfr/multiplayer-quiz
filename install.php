@@ -34,5 +34,7 @@ createTable(
         'session_id varchar(255)',
         'game_id int',
         'is_host smallint unsigned default 0',
+        'last_selected_answer smallint unsigned default null',
+        'total_points smallint unsigned default 0'
     ]
 );

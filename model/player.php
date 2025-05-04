@@ -1,10 +1,12 @@
 <?php
 
+require_once('model/data_object.php');
 require_once('model/db.php');
 require_once('model/session.php');
 
-class Player
+class Player extends DataObject
 {
+    protected string $table = 'player';
     private $players = [];
 
     public function getBySessionId($sessionId)

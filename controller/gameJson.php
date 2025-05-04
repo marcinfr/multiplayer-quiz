@@ -25,8 +25,16 @@ if ($game->round < 1) {
     $question = app(Game::class)->getQuestion($game);
     $data['question']['question-number'] = $game->round;
     $data['question']['question-text'] = $question['question'];
-    foreach ($question['answers'] as $i => $answer) {
-        $data['answers']['answer-' . $i] = $answer['answer'];
+    $answersListHtml = '';
+    foreach ($question['answers'] as $id => $answer) {
+        $id += 1;
+        $class = 'answer';
+        if ($id == $player->last_selected_answer) {
+            $class .= ' selected';
+        } else {
+            $class .= ' not-selected';
+        }
+        $data['answers']['answers-list'] .= '<div class="' . $class. '" data-index="' . $id. '">' . $answer['answer'] . '</div>';
     }
 }
 
@@ -39,4 +47,5 @@ function getPlayersListHtml($game)
     return $html;
 }
 
+$data['hash'] = md5(json_encode($data));
 echo json_encode($data);
