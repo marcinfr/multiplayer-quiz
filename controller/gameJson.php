@@ -22,7 +22,12 @@ if ($game->round < 1) {
         $data['players']['list'] = $playersHtml;
     }
 } else {
-    $data['question']['question-text'] = app(Game::class)->getQuestion($game);
+    $question = app(Game::class)->getQuestion($game);
+    $data['question']['question-number'] = $game->round;
+    $data['question']['question-text'] = $question['question'];
+    foreach ($question['answers'] as $i => $answer) {
+        $data['answers']['answer-' . $i] = $answer['answer'];
+    }
 }
 
 function getPlayersListHtml($game)

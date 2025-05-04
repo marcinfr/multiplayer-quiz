@@ -61,19 +61,34 @@ class Game
         if (!isset($game->question)) {
             $game->question = json_decode($game->current_question, true);
         }
-        return $game->question['question'];
+        return $game->question;
     }
 
     public function randomQuestion($game)
     {
-        $quizId = 3;
+        $quizId = 8;
         $questions = Quiz::getQuestions($quizId);
         $randomQuestionId = array_rand($questions);
         $randomQuestion = Quiz::getQuestion($quizId, $randomQuestionId);
-        $randomQuestion = json_encode($randomQuestion);
-        $game->current_question = $randomQuestion;
+        $answers = [[
+            'answer' => $randomQuestion['answer'],
+            'correct' => true,
+        ]];
+        $wrongAnswers = $randomQuestion['wrong_answers'] ?? [];
+        foreach ($wrongAnswers as $answer) {
+            $answers[] = [
+                'answer' => $answer
+            ];
+        }
+
+        shuffle($answers);
+
+        $game->current_question = [
+            'question' => $randomQuestion['question'],
+            'answers' => $answers,
+        ];
         $this->update($game, [
-            'current_question' => $game->current_question,
+            'current_question' => json_encode($game->current_question),
         ]);
     }
 }

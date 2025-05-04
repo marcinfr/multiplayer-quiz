@@ -18,10 +18,22 @@
                 <table id="list"></table>
             </div>
             <div id="section-question" class="section" style="display:none">
+                <h3>Pytanie numer: <span id="question-number"></span></h3>
                 <div id="question-text"></div>
             </div>
             <div id="section-answers" class="section" style="display:none">
-                answers
+                <div class="col-50">
+                    <a href="#" class="answer"><span id="answer-0"></span></a>
+                </div>
+                <div class="col-50">
+                    <a href="#" class="answer"><span id="answer-1"></span></a>
+                </div>
+                <div class="col-50">
+                    <a href="#" class="answer"><span id="answer-2"></span></a>
+                </div>
+                <div class="col-50">
+                    <a href="#" class="answer"><span id="answer-3"></span></a>
+                </div>
             </div>
         </div>
         <script>
