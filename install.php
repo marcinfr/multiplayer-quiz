@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once("app.php");
 require_once("model/db.php");
 
@@ -22,7 +26,9 @@ createTable(
          'id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY',
          'creator varchar(255)',
          'round smallint unsigned default 0',
-         'current_question text'
+         'current_question text',
+         'status varchar(255)',
+         'last_update_timestamp int unsigned'
     ]
 );
 
@@ -35,6 +41,7 @@ createTable(
         'game_id int',
         'is_host smallint unsigned default 0',
         'last_selected_answer smallint unsigned default null',
-        'total_points smallint unsigned default 0'
+        'total_points smallint unsigned default 0',
+        'last_activity_timestamp int unsigned'
     ]
 );

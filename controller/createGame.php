@@ -1,32 +1,33 @@
 <?php
 
 require_once('model/db.php');
-require_once('model/session.php');
+require_once('model/player.php');
+require_once('model/game.php');
 
 $db = app(DB::class);
 $connection = $db->getConnection();
 
-$session = app(Session::class);
-
 $name = $_POST['name'];
 $gameId = $_POST['game_id'];
 $isHost = 0;
-$sessionId = $session->getSessionId();
+
+$player = app(Player::class)->getCurrentPlayer();
 
 if (!$gameId) {
     $isHost = 1;
-    $sql = "insert into game (creator) values('$name')";
-    if ($connection->query($sql)) {
-        $gameId = $connection->insert_id;
-    } else {
-        throw new \Exception("Błąd zapisu");
-    }
+    $game = (object) [
+        'creator' => $name,
+        'last_update_timestamp' => time(),
+    ];
+    app(Game::class)->save($game);
 }
 
-$sql = "insert into player (game_id, name, session_id, is_host) values($gameId, '$name', '$sessionId', $isHost)";
-if (!$connection->query($sql)) {
-    throw new \Exception("Błąd zapisu");
-}
+$player->game_id = $game->id;
+$player->name = $name;
+$player->is_host = $isHost;
+$player->last_selected_answer = null;
+$player->total_points = 0;
+app(Player::class)->save($player);
 
 header("Location: game");
 

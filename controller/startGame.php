@@ -7,5 +7,7 @@ $player = app(Player::class)->getCurrentPlayer();
 $game = app(Game::class)->getByPlayer($player);
 
 if ($game->round < 1 && $player->is_host) {
-    app(Game::class)->update($game, ['round' => 1]);
+    $game->round = 1;
+    $game->status = Game::STATUS_QUESTION;
+    app(Game::class)->update($game, ['round', 'status']);
 }

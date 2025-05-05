@@ -18,7 +18,7 @@
                 <table id="list"></table>
             </div>
             <div id="section-question" class="section" style="display:none">
-                <h3>Pytanie numer: <span id="question-number"></span></h3>
+                <div id="question-header">Pytanie numer: <span id="question-number"></span></div>
                 <div id="question-text"></div>
             </div>
             <div id="section-answers" class="section" style="display:none">

@@ -6,6 +6,9 @@ require_once('model/quiz.php');
 
 class Game extends DataObject
 {
+    const STATUS_QUESTION = 'question';
+    const STATUS_ANSWER = 'answer';
+
     protected string $table = 'game';
     private $games = [];
 
@@ -66,12 +69,10 @@ class Game extends DataObject
 
         shuffle($answers);
 
-        $game->current_question = [
+        $game->current_question = json_encode([
             'question' => $randomQuestion['question'],
             'answers' => $answers,
-        ];
-        $this->update($game, [
-            'current_question' => json_encode($game->current_question),
         ]);
+        $this->update($game, ['current_question']);
     }
 }
