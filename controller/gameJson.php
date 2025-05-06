@@ -51,6 +51,7 @@ class GameJson
         return $html;
     }
 
+    
     private function setPlayersInfo()
     {
         if ($this->getGame()->round < 1) {
@@ -64,6 +65,15 @@ class GameJson
     private function setQuestion()
     {
         if ($this->getGame()->round < 1) {
+            return;
+        }
+
+        if (!in_array($this->getGame()->status, 
+            [
+                GAME::STATUS_QUESTION, 
+                GAME::STATUS_ANSWER
+            ]
+        )) {
             return;
         }
 
@@ -93,6 +103,14 @@ class GameJson
         }
     }
 
+    private function setRoundResult()
+    {
+        if ($this->getGame()->status != GAME::STATUS_ROUND_RESULT) {
+            return;
+        }
+        $this->data['round-result'] = [];
+    }
+
     private function isRoundEnded()
     {
         foreach ($this->getPLayers() as $player) {
@@ -103,12 +121,34 @@ class GameJson
         return true;
     }
 
+    private function allPlayersReady()
+    {
+        foreach($this->getPlayers() as $player) {
+            if ($player->last_selected_answer !== null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private function updateGameStatus()
     {
-        if ($this->getGame()->status == Game::STATUS_QUESTION) {
-            if ($this->isRoundEnded()) {
-                $this->getGame()->status = Game::STATUS_ANSWER;
-            }
+        switch ($this->getGame()->status) {
+            case Game::STATUS_QUESTION:
+                if ($this->isRoundEnded()) {
+                    app(Game::class)->updateStatus($this->getGame(), Game::STATUS_ANSWER);
+                }
+                break;
+            case Game::STATUS_ANSWER:
+                if (app(Game::class)->hasTimeElapsedFromLastUpdate($this->getGame(), 2)) {
+                    app(Game::class)->updateStatus($this->getGame(), Game::STATUS_ROUND_RESULT);
+                }
+                break;
+            case Game::STATUS_ROUND_RESULT:
+                if ($this->allPlayersReady()) {
+                    app(Game::class)->nextRound($this->getGame());
+                }
+                break;
         }
     }
 
@@ -118,6 +158,7 @@ class GameJson
         $this->setGameInfo();
         $this->setPlayersInfo();
         $this->setQuestion();
+        $this->setRoundResult();
 
         $this->data['hash'] = md5(json_encode($this->data));
         return json_encode($this->data);

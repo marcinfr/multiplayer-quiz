@@ -8,7 +8,7 @@
     <body>
         <div class="container">
             <div id="section-start" class="section" style="display:none">
-                <a href="#" onclick="startGame()" class="primary">Start</a>
+                <a href="#" onclick="action('startGame')" class="primary">Start</a>
             </div>
             <div id="section-wait" class="section" style="display:none">
                 Zaczekaj na start gry
@@ -16,6 +16,10 @@
             <div id="section-players" class="section" style="display:none">
                 <h3><label>Gracze</label></h3>
                 <table id="list"></table>
+            </div>
+            <div id="section-round-result" class="section" style="display:none">
+                <h3>Tutaj bedzie wynik rundy ale jeszcze ni ma</h3>
+                <a href="#" onclick="action('setPlayerReady')" class="primary">Gotowy</a>
             </div>
             <div id="section-question" class="section" style="display:none">
                 <div id="question-header">Pytanie numer: <span id="question-number"></span></div>
@@ -26,11 +30,11 @@
             </div>
         </div>
         <script>
-            function startGame()
+            function action(actionUrl)
             {
                 $.ajax({
                     type : 'GET',
-                    url : 'startGame',
+                    url : actionUrl,
                 });
             }
         </script>

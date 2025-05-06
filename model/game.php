@@ -8,6 +8,7 @@ class Game extends DataObject
 {
     const STATUS_QUESTION = 'question';
     const STATUS_ANSWER = 'answer';
+    const STATUS_ROUND_RESULT = 'round_result';
 
     protected string $table = 'game';
     private $games = [];
@@ -74,5 +75,30 @@ class Game extends DataObject
             'answers' => $answers,
         ]);
         $this->update($game, ['current_question']);
+    }
+
+    public function updateStatus($game, $newStatus)
+    {
+        if ($newStatus != $game->status) {
+            $game->status = $newStatus;
+            $game->last_update_timestamp = time();
+            self::update($game, ['status', 'last_update_timestamp', 'round']);
+        }
+    }
+
+    public function nextRound($game)
+    {
+        if ($game->status !== self::STATUS_QUESTION) {
+            $game->status = self::STATUS_QUESTION;
+            $game->last_update_timestamp = time();
+            $game->current_question = null;
+            $game->round ++;
+            self::update($game, ['status', 'last_update_timestamp', 'round', 'current_question']);
+        }
+    }
+
+    public function hasTimeElapsedFromLastUpdate($game, int $seconds)
+    {
+        return time() - $seconds > $game->last_update_timestamp;
     }
 }

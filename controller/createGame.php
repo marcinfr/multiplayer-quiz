@@ -16,8 +16,7 @@ $player = app(Player::class)->getCurrentPlayer();
 if (!$gameId) {
     $isHost = 1;
     $game = (object) [
-        'creator' => $name,
-        'last_update_timestamp' => time(),
+        'creator' => $name
     ];
     app(Game::class)->save($game);
     $gameId = $game->id;
