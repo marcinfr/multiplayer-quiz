@@ -20,9 +20,10 @@ if (!$gameId) {
         'last_update_timestamp' => time(),
     ];
     app(Game::class)->save($game);
+    $gameId = $game->id;
 }
 
-$player->game_id = $game->id;
+$player->game_id = $gameId;
 $player->name = $name;
 $player->is_host = $isHost;
 $player->last_selected_answer = null;

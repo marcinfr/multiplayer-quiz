@@ -2,7 +2,7 @@
 require_once("model/quiz.php");
 
 $quizId = $_GET["quiz"];
-$id = $_GET['id'];
+$id = $_GET['id'] ?? '';
 $question = Quiz::getQuestion($quizId, $id);
 ?>
 <html>
