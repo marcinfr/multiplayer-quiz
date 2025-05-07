@@ -1,7 +1,7 @@
 <?php
 
-require_once('model/player.php');
-require_once('model/game.php');
+use \App\Models\Game;
+use \App\Models\Player;
 
 class GameJson
 {
@@ -70,8 +70,8 @@ class GameJson
 
         if (!in_array($this->getGame()->status, 
             [
-                GAME::STATUS_QUESTION, 
-                GAME::STATUS_ANSWER
+                Game::STATUS_QUESTION, 
+                Game::STATUS_ANSWER
             ]
         )) {
             return;
@@ -86,7 +86,7 @@ class GameJson
             $id += 1;
             $class = 'answer';
             if ($id == $this->getCurrentPlayer()->last_selected_answer) {
-                if ($this->getGame()->status == GAME::STATUS_ANSWER) {
+                if ($this->getGame()->status == Game::STATUS_ANSWER) {
                     $isCorrect = $answer['correct'] ?? false;
                     if ($isCorrect) {
                         $class .= ' correct';
@@ -105,7 +105,7 @@ class GameJson
 
     private function setRoundResult()
     {
-        if ($this->getGame()->status != GAME::STATUS_ROUND_RESULT) {
+        if ($this->getGame()->status != Game::STATUS_ROUND_RESULT) {
             return;
         }
         $this->data['round-result'] = [];

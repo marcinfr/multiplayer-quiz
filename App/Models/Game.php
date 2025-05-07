@@ -1,8 +1,6 @@
 <?php
 
-require_once('model/data_object.php');
-require_once('model/db.php');
-require_once('model/quiz.php');
+namespace App\Models;
 
 class Game extends DataObject
 {

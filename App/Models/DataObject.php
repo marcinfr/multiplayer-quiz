@@ -1,6 +1,6 @@
 <?php
 
-require_once('model/db.php');
+namespace App\Models;
 
 class DataObject
 {

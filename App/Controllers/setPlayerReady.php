@@ -1,7 +1,7 @@
 <?php
 
-require_once('model/player.php');
-require_once('model/game.php');
+use \App\Models\Game;
+use \App\Models\Player;
 
 $player = app(Player::class)->getCurrentPlayer();
 $game = app(Game::class)->getByPlayer($player);

@@ -1,8 +1,6 @@
 <?php
 
-require_once('model/db.php');
-
-$db = app(DB::class);
+$db = app(\App\Models\Db::class);
 $connection = $db->getConnection();
 
 $sql = "select id,creator from game where round = 0";

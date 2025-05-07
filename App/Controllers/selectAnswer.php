@@ -1,7 +1,7 @@
 <?php
 
-require_once('model/player.php');
-require_once('model/game.php');
+use \App\Models\Player;
+use \App\Models\Game;
 
 $answerId = $_GET['id'];
 $player = app(Player::class)->getCurrentPlayer();

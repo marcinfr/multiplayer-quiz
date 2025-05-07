@@ -1,8 +1,6 @@
 <?php
 
-require_once('model/data_object.php');
-require_once('model/db.php');
-require_once('model/session.php');
+namespace App\Models;
 
 class Player extends DataObject
 {
@@ -12,7 +10,7 @@ class Player extends DataObject
     public function getBySessionId($sessionId)
     {
         if (!isset($this->players[$sessionId])) {
-            $db = app(DB::class);
+            $db = app(Db::class);
             $connection = $db->getConnection();
             $sql = 'select * from player where session_id = "' . $sessionId . '"';
             $player = $connection->query($sql)->fetch_object();

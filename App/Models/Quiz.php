@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Models;
+
 class Quiz
 {
 	const quizDir = "quiz";

@@ -4,7 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('app.php');
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/App/app.php';
 
 $request = $_SERVER['REQUEST_URI'];
 $script_name = dirname($_SERVER['SCRIPT_NAME']);
@@ -21,7 +22,7 @@ if (!$path) {
     $path = 'index';
 }
 
-$file = 'controller/' . $path . '.php';
+$file = 'App/Controllers/' . $path . '.php';
 
 if (file_exists($file)) {
     require $file;

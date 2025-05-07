@@ -1,5 +1,6 @@
 <?php
-require_once("model/quiz.php");
+
+use \App\Models\Quiz;
 
 $id = $_GET["id"] ?? '';
 $name = Quiz::getNameById($id);

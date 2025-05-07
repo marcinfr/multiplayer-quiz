@@ -1,6 +1,6 @@
 <?php
 
-require_once('model/quiz.php');
+use \App\Models\Quiz;
 
 $data = Quiz::getList();
 
