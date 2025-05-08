@@ -1,5 +1,15 @@
 <?php
 
+namespace App\Controllers;
+
+class QuizList extends \App\Controllers\AbstractController
+{
+    public function execute()
+    {
+        
+    }
+}
+
 use \App\Models\Quiz;
 
 $list = Quiz::getList();

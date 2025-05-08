@@ -1,11 +1,23 @@
 <?php
 
-$db = app(\App\Models\Db::class);
-$connection = $db->getConnection();
+namespace App\Controllers;
 
+class SelectGame extends AbstractController
+{
+    public function execute()
+    {
+
+    }
+}
+
+$db = app(\App\Db::class);
+$connection = $db->getConnection();
 $sql = "select id,creator from game where round = 0";
 $activeGames = $connection->query($sql);
+
 ?>
+
+
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">

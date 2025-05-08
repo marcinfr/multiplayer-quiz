@@ -14,7 +14,7 @@ class Game extends DataObject
     public function getByPlayer($player)
     {
         if (!isset($this->games[$player->id])) {
-            $db = app(DB::class);
+            $db = app(\App\DB::class);
             $connection = $db->getConnection();
             $sql = 'select * from game where id = ' . $player->game_id;
             $this->games[$player->id] = $connection->query($sql)->fetch_object();
@@ -26,7 +26,7 @@ class Game extends DataObject
     {
         if (!isset($game->players)) {
             $game->players = [];
-            $db = app(DB::class);
+            $db = app(\App\DB::class);
             $connection = $db->getConnection();
 
             $sql = 'select * from player where game_id = ' . $game->id;

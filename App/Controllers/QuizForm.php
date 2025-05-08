@@ -1,5 +1,14 @@
 <?php
 
+namespace App\Controllers;
+
+class QuizForm extends \App\Controllers\AbstractController
+{
+    public function execute()
+    {
+    }
+}
+
 use \App\Models\Quiz;
 
 $id = $_GET["id"] ?? '';

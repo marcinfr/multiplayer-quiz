@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 class Db
 {
@@ -9,7 +9,7 @@ class Db
     public function getConnection()
     {
         if ($this->connection === null) {
-            $config = require(__DIR__ . '/../../config/db.php');
+            $config = require(__DIR__ . '/../config/db.php');
             $host = $config['DB_HOST'];
             $user = $config['DB_USER'];
             $password = $config['DB_PASSWORD'];

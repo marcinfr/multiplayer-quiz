@@ -1,3 +1,16 @@
+<?php
+
+namespace App\Controllers;
+
+class Game extends \App\Controllers\AbstractController
+{
+    public function execute()
+    {
+        
+    }
+}
+?>
+
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">

@@ -10,7 +10,7 @@ class Player extends DataObject
     public function getBySessionId($sessionId)
     {
         if (!isset($this->players[$sessionId])) {
-            $db = app(Db::class);
+            $db = app(\App\Db::class);
             $connection = $db->getConnection();
             $sql = 'select * from player where session_id = "' . $sessionId . '"';
             $player = $connection->query($sql)->fetch_object();
@@ -26,7 +26,7 @@ class Player extends DataObject
 
     public function getCurrentPlayer()
     {
-        $session = app(Session::class);
+        $session = app(\App\Session::class);
         return $this->getBySessionId($session->getSessionId());
     }
 } 

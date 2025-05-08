@@ -71,7 +71,7 @@ class DataObject
 
     private function getConnection()
     {
-        $db = app(DB::class);
+        $db = app(\App\DB::class);
         return $db->getConnection();
     }
 }

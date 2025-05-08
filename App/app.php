@@ -8,7 +8,11 @@ function app($class = null) {
     }
 
     if (!isset($container[$class])) {
-        $container[$class] = new $class();
+        if (class_exists($class)) {
+            $container[$class] = new $class();
+        } else {
+           throw new \App\Exceptions\ClassNotExists('Class ' . $class . ' not exists');
+        }
     }
 
     return $container[$class];

@@ -4,8 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once("app.php");
-require_once("model/db.php");
+require_once("App/app.php");
+require_once("App/Models/Db.php");
 
 function createTable(string $name, array $columns)
 {

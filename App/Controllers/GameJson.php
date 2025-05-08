@@ -1,9 +1,11 @@
 <?php
 
+namespace App\Controllers;
+
 use \App\Models\Game;
 use \App\Models\Player;
 
-class GameJson
+class GameJson extends \App\Controllers\AbstractController
 {
     private $data = [];
     private $game;
@@ -152,7 +154,7 @@ class GameJson
         }
     }
 
-    public function getJson()
+    public function execute()
     {
         $this->updateGameStatus();
         $this->setGameInfo();
@@ -161,9 +163,7 @@ class GameJson
         $this->setRoundResult();
 
         $this->data['hash'] = md5(json_encode($this->data));
-        return json_encode($this->data);
+        echo json_encode($this->data);
     }
 }
 
-$gameJson = new GameJson();
-echo $gameJson->getJson();

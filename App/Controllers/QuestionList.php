@@ -1,5 +1,20 @@
 <?php
 
+namespace App\Controllers;
+
+class QuestionList extends \App\Controllers\AbstractController
+{
+    public function execute()
+    {
+        
+    }
+}
+?>
+
+
+
+<?php
+
 use \App\Models\Quiz;
 
 $quizId = $_GET["quiz"] ?? '';
