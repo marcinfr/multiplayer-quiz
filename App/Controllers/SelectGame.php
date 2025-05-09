@@ -14,7 +14,9 @@ $db = app(\App\Db::class);
 $connection = $db->getConnection();
 $sql = "select id,creator from game where round = 0";
 $activeGames = $connection->query($sql);
-
+if (!$activeGames) {
+    $activeGames = [];
+}
 ?>
 
 

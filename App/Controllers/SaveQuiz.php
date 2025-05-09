@@ -12,7 +12,7 @@ class SaveQuiz extends \App\Controllers\AbstractController
 
         $id = $this->getRequest()->getParam('id');
         if (!Quiz::quizExists($id)) {
-            $id = array_key_last($data);
+            $id = max(0, $data);
             $id ++;
         }
 
