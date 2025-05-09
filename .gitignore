@@ -1,2 +1,4 @@
+/.idea
 quiz
-config.php
+config/db.php
+
