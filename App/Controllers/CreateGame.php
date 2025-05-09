@@ -6,9 +6,6 @@ class CreateGame extends \App\Controllers\AbstractController
 {
     public function execute()
     {
-        $db = app(\App\Db::class);
-        $connection = $db->getConnection();
-
         $name = $_POST['name'];
         $gameId = $_POST['game_id'];
         $isHost = 0;

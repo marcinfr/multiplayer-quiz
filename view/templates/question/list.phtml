@@ -1,0 +1,19 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="pub/css/quiz.css">
+</head>
+<body>
+<div class="container">
+    <a href="quizForm?id=<?= $this->getData('quiz_id') ?>" class="back">Wróć</a>
+    <table>
+        <?php foreach($this->getData('questions') as $id => $data): ?>
+            <tr>
+                <td><?= $data['question'] ?? '' ?></td>
+                <td><a href="questionForm?quiz=<?= $this->getData('quiz_id') ?>&id=<?= $id ?>" class="primary">Edytuj</a></td>
+            </tr>
+        <?php endforeach ?>
+    </table>
+</div>
+</body>
+</html>

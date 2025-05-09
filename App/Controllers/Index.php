@@ -6,8 +6,7 @@ class Index extends AbstractController
 {
 	public function execute()
 	{
-		ob_start();
-        include __DIR__ . '/../../view/templates/menu.phtml';
-        echo ob_get_clean();
+        $template = new \App\Block\Template('menu.phtml');
+        $template->render();
 	}
 }
