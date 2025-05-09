@@ -4,18 +4,15 @@ namespace App\Controllers;
 
 abstract class AbstractController
 {
-    private $request;
-
     abstract public function execute();
 
     public function getRequest()
     {
-        return $this->request;
+        return app(\App\Request::class);
     }
 
-    public function dispatch($request)
+    public function dispatch()
     {
-        $this->request = $request;
-        $this->execute();
+        return $this->execute();
     }
 }

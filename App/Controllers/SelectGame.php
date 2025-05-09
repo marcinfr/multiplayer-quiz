@@ -13,12 +13,13 @@ class SelectGame extends AbstractController
         if (!$activeGames) {
             $activeGames = [];
         }
-        $template = new \App\Block\Template('game/select.phtml',
+        $content = new \App\Block\Template('game/select.phtml',
             [
                 'active_games' => $activeGames
             ]
         );
-        $template->render();
+        app(\App\Block\Page::class)->addChild($content, 'content');
+        return app(\App\Response\Page::class);
     }
 }
 

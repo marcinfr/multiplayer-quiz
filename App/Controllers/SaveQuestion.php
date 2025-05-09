@@ -20,6 +20,6 @@ class SaveQuestion extends \App\Controllers\AbstractController
             $_POST['wrong_answer_3'],
         );
 
-        header("Location: quizForm?id=" . $quizId);
+        return app(\App\Response\Redirect::class)->setUrl('quizForm?id=' . $quizId);
     }
 }

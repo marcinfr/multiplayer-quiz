@@ -28,7 +28,7 @@ class CreateGame extends \App\Controllers\AbstractController
         $player->total_points = 0;
         app(\App\Models\Player::class)->save($player);
 
-        header("Location: game");
+        return app(\App\Response\Redirect::class)->setUrl('game');
     }
 }
 

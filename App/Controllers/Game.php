@@ -6,7 +6,8 @@ class Game extends \App\Controllers\AbstractController
 {
     public function execute()
     {
-        $template = new \App\Block\Template('game.phtml');
-        $template->render();
+        $content = new \App\Block\Template('game.phtml');
+        app(\App\Block\Page::class)->addChild($content, 'content');
+        return app(\App\Response\Page::class);
     }
 }

@@ -33,9 +33,7 @@ class Router
             exit();
         }
 
-
-        $request = new \App\Request();
         $controller = new $class();
-        $controller->dispatch($request);
+        return $controller->dispatch();
     }
 }

@@ -6,7 +6,8 @@ class Index extends AbstractController
 {
 	public function execute()
 	{
-        $template = new \App\Block\Template('menu.phtml');
-        $template->render();
+        $content = new \App\Block\Template('menu.phtml');
+        app(\App\Block\Page::class)->addChild($content, 'content');
+        return app(\App\Response\Page::class);
 	}
 }

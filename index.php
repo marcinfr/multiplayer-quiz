@@ -7,4 +7,5 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/App/app.php';
 
-app(\App\Router::class)->handle();
+$response = app(\App\Router::class)->handle();
+$response->sendResponse();

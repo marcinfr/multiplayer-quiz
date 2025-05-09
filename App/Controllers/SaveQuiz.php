@@ -25,7 +25,7 @@ class SaveQuiz extends \App\Controllers\AbstractController
             die("Nie udało się zapisać");
         }
 
-        header("Location: quizForm?id=" . $id);
+        return app(\App\Response\Redirect::class)->setUrl('quizForm?id=' . $id);
     }
 }
 

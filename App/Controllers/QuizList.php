@@ -7,11 +7,12 @@ class QuizList extends \App\Controllers\AbstractController
     public function execute()
     {
         $list = \App\Models\Quiz::getList();
-        $template = new \App\Block\Template('quiz/list.phtml',
+        $content = new \App\Block\Template('quiz/list.phtml',
             [
                 'list' => $list,
             ]
         );
-        $template->render();
+        app(\App\Block\Page::class)->addChild($content, 'content');
+        return app(\App\Response\Page::class);
     }
 }

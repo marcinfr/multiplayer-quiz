@@ -7,12 +7,15 @@ namespace App\Block;
 
 class Template
 {
-    private $template;
+    protected $template;
     private $data = [];
+    private $childs = [];
 
     public function __construct(string $template = null, $data = [])
     {
-        $this->template = $template;
+        if ($template) {
+            $this->template = $template;
+        }
         $this->data = $data;
     }
 
@@ -21,12 +24,31 @@ class Template
         return $this->data[$key] ?? null;
     }
 
-    public function render()
+    public function getHtml()
     {
         if ($this->template) {
             ob_start();
             include __DIR__ . '/../../view/templates/' . $this->template;
-            echo ob_get_clean();
+            return ob_get_clean();
         }
+    }
+
+    public function addChild($child, string $name = null)
+    {
+        if ($name) {
+            $this->childs[$name] = $child;
+        } else {
+            $this->childs[] = $child;
+        }
+        return $this;
+    }
+
+    public function getChild($name)
+    {
+        $child =  $this->childs[$name] ?? false;
+        if ($child) {
+            return $child->gethtml();
+        }
+        return '';
     }
 }

@@ -57,7 +57,7 @@ class GameJson extends \App\Controllers\AbstractController
     private function setPlayersInfo()
     {
         if ($this->getGame()->round < 1) {
-            $playersHtml = $this->getPlayersListHtml($this->getGame());
+            $playersHtml = $this->getPlayersListHtml();
             if ($playersHtml) {
                 $this->data['players']['list'] = $playersHtml;
             }
@@ -163,7 +163,7 @@ class GameJson extends \App\Controllers\AbstractController
         $this->setRoundResult();
 
         $this->data['hash'] = md5(json_encode($this->data));
-        echo json_encode($this->data);
+        return app(\App\Response\Json::class)->setJson($this->data);
     }
 }
 
