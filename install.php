@@ -4,12 +4,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+require_once __DIR__ . '/vendor/autoload.php';
 require_once("App/app.php");
-require_once("App/Models/Db.php");
 
 function createTable(string $name, array $columns)
 {
-    $db = app(DB::class);
+    $db = app(\App\Db::class);
     $connection = $db->getConnection();
 
     if ($connection->query("SHOW TABLES LIKE '$name'")->fetch_all()) {

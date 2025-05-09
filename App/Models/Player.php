@@ -13,7 +13,11 @@ class Player extends DataObject
             $db = app(\App\Db::class);
             $connection = $db->getConnection();
             $sql = 'select * from player where session_id = "' . $sessionId . '"';
-            $player = $connection->query($sql)->fetch_object();
+            $result = $connection->query($sql);
+            if (!$result) {
+                throw new \Exception($connection->error);
+            }
+            $player = $result->fetch_object();
             if ($player === null) {
                 $player = (object) [
                     'session_id' =>  $sessionId
