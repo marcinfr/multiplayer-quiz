@@ -51,4 +51,13 @@ class Template
         }
         return '';
     }
+
+    public function getChilds()
+    {
+        $childs = '';
+        foreach ($this->childs as $child) {
+            $childs .= $child->getHtml();
+        }
+        return $childs;
+    }
 }

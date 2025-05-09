@@ -43,24 +43,16 @@ class GameJson extends \App\Controllers\AbstractController
     {
         return app(Game::class)->getPlayers($this->getGame());
     }
-
-    private function getPlayersListHtml()
-    {
-        $html = '';
-        foreach($this->getPlayers() as $player) {
-            $html .= '<tr><td>' . $player->name . '<td></tr>';
-        }
-        return $html;
-    }
-
     
     private function setPlayersInfo()
     {
         if ($this->getGame()->round < 1) {
-            $playersHtml = $this->getPlayersListHtml();
-            if ($playersHtml) {
-                $this->data['players']['list'] = $playersHtml;
+            $playersListBlock =  new \App\Block\Template('game/players.phtml');
+            foreach($this->getPlayers() as $player) {
+                $playerBlock = new \App\Block\Template('game/players/player.phtml', ['player' => $player]);
+                $playersListBlock->addChild($playerBlock);
             }
+            $this->data['players'] = $playersListBlock->getHtml();
         }
     }
 
@@ -83,7 +75,6 @@ class GameJson extends \App\Controllers\AbstractController
         $this->data['question']['question-number'] = $this->getGame()->round;
         $this->data['question']['question-text'] = $question['question'];
         $this->data['answers']['answers-list'] = '';
-        $answersListHtml = '';
         foreach ($question['answers'] as $id => $answer) {
             $id += 1;
             $class = 'answer';
