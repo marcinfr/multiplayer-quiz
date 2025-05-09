@@ -12,14 +12,14 @@ class SaveQuiz extends \App\Controllers\AbstractController
 
         $id = $this->getRequest()->getParam('id');
         if (!Quiz::quizExists($id)) {
-            $id = max(0, $data);
+            $id = max(0, array_key_last($data));
             $id ++;
         }
 
         $name = $this->getRequest()->getParam('name');;
         $data[$id] = $name;
 
-        $data = json_encode($data);
+        $data = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
         if (!file_put_contents(Quiz::listFile, $data)) {
             die("Nie udało się zapisać");

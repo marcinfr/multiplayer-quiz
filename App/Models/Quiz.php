@@ -77,7 +77,7 @@ class Quiz
 				]
 			];
 			$quizFile = self::quizDir . '/' . $quizId . '.json';
-			$questions = json_encode($questions);
+			$questions = json_encode($questions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 			if (!file_put_contents($quizFile, $questions)) {
     			die("Nie udało się zapisać");
 			}
