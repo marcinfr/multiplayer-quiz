@@ -15,7 +15,8 @@ class CreateGame extends \App\Controllers\AbstractController
         if (!$gameId) {
             $isHost = 1;
             $game = (object) [
-                'creator' => $name
+                'creator' => $name,
+                'status' => \App\Models\Game::STATUS_RESULT,
             ];
             app(\App\Models\Game::class)->save($game);
             $gameId = $game->id;
@@ -24,7 +25,7 @@ class CreateGame extends \App\Controllers\AbstractController
         $player->game_id = $gameId;
         $player->name = $name;
         $player->is_host = $isHost;
-        $player->last_selected_answer = null;
+        $player->last_selected_answer = 0;
         $player->total_points = 0;
         app(\App\Models\Player::class)->save($player);
 

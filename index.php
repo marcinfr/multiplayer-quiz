@@ -8,4 +8,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/App/app.php';
 
 $response = app(\App\Router::class)->handle();
-$response->sendResponse();
+if ($response) {
+    $response->sendResponse();
+}

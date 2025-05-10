@@ -9,15 +9,11 @@ var update = function() {
             }
             $(".section").hide();
             gameHash = parsedData['hash'];
-            for (const [key, elems] of Object.entries(parsedData)) {
-                if (typeof elems == "string") {
-                    $('#section-' + key).html(elems);
-                } else {
-                    for (const [id, content] of Object.entries(elems)) {
-                        $('#' + id).html(content);
-                    }
-                }
-                $('#section-' + key).show();
+            for (const [key, content] of Object.entries(parsedData)) {
+                console.log(key);
+                console.log(content);
+                $('#' + key).html(content);
+                $('#' + key).show();
             }
             $('.answer').on('click', function() {
                 const answer_id = $(this).data('index');

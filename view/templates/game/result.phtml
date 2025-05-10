@@ -1,0 +1,9 @@
+<a href="#" onclick="action('setPlayerReady')" class="primary">Gotowy</a>
+<div id="section-players">
+    <h3><label>Gracze</label></h3>
+    <table id="list">
+        <?php foreach($this->getData('players') as $player): ?>
+            <tr><td><?= $player->name ?><td></tr>
+        <?php endforeach ?>
+    </table>
+</div>

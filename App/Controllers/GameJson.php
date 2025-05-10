@@ -20,17 +20,6 @@ class GameJson extends \App\Controllers\AbstractController
         return $this->game;
     }
 
-    private function setGameInfo()
-    {
-        if ($this->getGame()->round < 1) {
-            if ($this->getCurrentPlayer()->is_host) {
-                $this->data['start'] = [];
-            } else {
-                $this->data['wait'] = [];
-            }
-        }
-    }
-
     private function getCurrentPlayer()
     {
         if ($this->currentPlayer === null) {
@@ -43,21 +32,10 @@ class GameJson extends \App\Controllers\AbstractController
     {
         return app(Game::class)->getPlayers($this->getGame());
     }
-    
-    private function setPlayersInfo()
-    {
-        if ($this->getGame()->round < 1) {
-            $playersListBlock =  new \App\Block\Template('game/players.phtml');
-            foreach($this->getPlayers() as $player) {
-                $playerBlock = new \App\Block\Template('game/players/player.phtml', ['player' => $player]);
-                $playersListBlock->addChild($playerBlock);
-            }
-            $this->data['players'] = $playersListBlock->getHtml();
-        }
-    }
 
     private function setQuestion()
     {
+        $this->data['section-question'] = '';
         if ($this->getGame()->round < 1) {
             return;
         }
@@ -72,36 +50,43 @@ class GameJson extends \App\Controllers\AbstractController
         }
 
         $question = app(Game::class)->getQuestion($this->getGame());
-        $this->data['question']['question-number'] = $this->getGame()->round;
-        $this->data['question']['question-text'] = $question['question'];
-        $this->data['answers']['answers-list'] = '';
+
         foreach ($question['answers'] as $id => $answer) {
-            $id += 1;
-            $class = 'answer';
-            if ($id == $this->getCurrentPlayer()->last_selected_answer) {
+            $selectedId = $this->getCurrentPlayer()->last_selected_answer;
+            if ($selectedId !== null && $selectedId == $id + 1) {
                 if ($this->getGame()->status == Game::STATUS_ANSWER) {
                     $isCorrect = $answer['correct'] ?? false;
                     if ($isCorrect) {
-                        $class .= ' correct';
+                        $class= 'correct';
                     } else {
-                        $class .= ' incorrect';
+                        $class = 'incorrect';
                     }
                 } else {
                     $class .= ' selected';
                 }
             } else {
-                $class .= ' not-selected';
+                $class = 'not-selected';
             }
-            $this->data['answers']['answers-list'] .= '<div class="' . $class. '" data-index="' . $id. '">' . $answer['answer'] . '</div>';
+            $question['answers'][$id]['class'] = $class;
         }
+
+        $questionBlock =  new \App\Block\Template('game/question.phtml', [
+            'game' => $this->getGame(),
+            'question' => $question,
+        ]);
+
+        $this->data['section-question'] = $questionBlock->getHtml();
+
+        return;
     }
 
-    private function setRoundResult()
+    private function setResult()
     {
-        if ($this->getGame()->status != Game::STATUS_ROUND_RESULT) {
-            return;
+        $this->data['section-result'] = '';
+        if ($this->getGame()->status == Game::STATUS_RESULT) {
+            $resultBlock = new \App\Block\Template('game/result.phtml', ['players' => $this->getPlayers()]);
+            $this->data['section-result'] = $resultBlock->getHtml();
         }
-        $this->data['round-result'] = [];
     }
 
     private function isRoundEnded()
@@ -134,10 +119,10 @@ class GameJson extends \App\Controllers\AbstractController
                 break;
             case Game::STATUS_ANSWER:
                 if (app(Game::class)->hasTimeElapsedFromLastUpdate($this->getGame(), 2)) {
-                    app(Game::class)->updateStatus($this->getGame(), Game::STATUS_ROUND_RESULT);
+                    app(Game::class)->updateStatus($this->getGame(), Game::STATUS_RESULT);
                 }
                 break;
-            case Game::STATUS_ROUND_RESULT:
+            case Game::STATUS_RESULT:
                 if ($this->allPlayersReady()) {
                     app(Game::class)->nextRound($this->getGame());
                 }
@@ -148,10 +133,8 @@ class GameJson extends \App\Controllers\AbstractController
     public function execute()
     {
         $this->updateGameStatus();
-        $this->setGameInfo();
-        $this->setPlayersInfo();
         $this->setQuestion();
-        $this->setRoundResult();
+        $this->setResult();
 
         $this->data['hash'] = md5(json_encode($this->data));
         return app(\App\Response\Json::class)->setJson($this->data);

@@ -63,7 +63,7 @@ class DataObject
             $value = $this->getConnection()->real_escape_string($value);
             $value = '"' . $value . '"';
         }
-        if ($value == null) {
+        if ($value === null) {
             return 'NULL';
         }
         return $value;

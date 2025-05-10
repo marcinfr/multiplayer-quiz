@@ -6,7 +6,7 @@ class Game extends DataObject
 {
     const STATUS_QUESTION = 'question';
     const STATUS_ANSWER = 'answer';
-    const STATUS_ROUND_RESULT = 'round_result';
+    const STATUS_RESULT = 'result';
 
     protected string $table = 'game';
     private $games = [];
