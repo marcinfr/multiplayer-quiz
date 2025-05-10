@@ -1,0 +1,13 @@
+<form id="form" method="post" action="create">
+    <input type="hidden" name="name" value="<?= $this->getRequest()->getParam('name') ?>" />
+    <input type="submit" value="Stwórz" id="button-ready">
+    <?php
+        $list = app(\App\Models\Quiz::class)->getList();
+    ?>
+    <div id="quiz-checkboxes">
+        <?php foreach ($list as $id => $quiz): ?>
+            <input type="checkbox" id="quiz-<?= $id ?>" name="quiz[]" value="<?= $id ?>">
+            <label for="quiz-<?= $id ?>"><?= $quiz ?></label>
+        <?php endforeach ?>
+    </div>
+</form>

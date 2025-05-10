@@ -50,10 +50,10 @@ class GameJson extends \App\Controllers\AbstractController
         }
 
         $question = app(Game::class)->getQuestion($this->getGame());
+        $player = $this->getCurrentPlayer();
 
         foreach ($question['answers'] as $id => $answer) {
-            $selectedId = $this->getCurrentPlayer()->last_selected_answer;
-            if ($selectedId !== null && $selectedId == $id + 1) {
+            if ($player->has_answer && $player->last_selected_answer == $id) {
                 if ($this->getGame()->status == Game::STATUS_ANSWER) {
                     $isCorrect = $answer['correct'] ?? false;
                     if ($isCorrect) {
@@ -86,6 +86,7 @@ class GameJson extends \App\Controllers\AbstractController
         if ($this->getGame()->status == Game::STATUS_RESULT) {
             $resultBlock = new \App\Block\Template('game/result.phtml', [
                 'game' => $this->getGame(),
+                'player' => $this->getCurrentPlayer(),
                 'players' => $this->getPlayers(),
             ]);
             $this->data['section-result'] = $resultBlock->getHtml();
@@ -95,7 +96,7 @@ class GameJson extends \App\Controllers\AbstractController
     private function isRoundEnded()
     {
         foreach ($this->getPLayers() as $player) {
-            if (!$player->last_selected_answer) {
+            if (!$player->has_answer) {
                 return false;
             }
         }
@@ -105,7 +106,7 @@ class GameJson extends \App\Controllers\AbstractController
     private function allPlayersReady()
     {
         foreach($this->getPlayers() as $player) {
-            if ($player->last_selected_answer !== null) {
+            if ($player->has_answer) {
                 return false;
             }
         }

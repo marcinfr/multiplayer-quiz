@@ -24,6 +24,11 @@ class Template
         return $this->data[$key] ?? null;
     }
 
+    public function getRequest()
+    {
+        return app(\App\Request::class);
+    }
+
     public function getHtml()
     {
         if ($this->template) {

@@ -23,12 +23,13 @@ function createTable(string $name, array $columns)
 createTable(
     'game', 
     [
-         'id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY',
-         'creator varchar(255)',
-         'round smallint unsigned default 0',
-         'current_question text',
-         'status varchar(255)',
-         'last_update_timestamp int unsigned'
+        'id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY',
+        'creator varchar(255)',
+        'round smallint unsigned default 0',
+        'current_question text',
+        'status varchar(255)',
+        'last_update_timestamp int unsigned',
+        'config text'
     ]
 );
 
@@ -41,6 +42,7 @@ createTable(
         'game_id int',
         'is_host smallint unsigned default 0',
         'last_selected_answer smallint unsigned default null',
+        'has_answer smallint unsigned default 0',
         'total_points smallint unsigned default 0',
         'last_activity_timestamp int unsigned'
     ]

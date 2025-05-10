@@ -17,3 +17,20 @@ function app($class = null) {
 
     return $container[$class];
 }
+
+function config()
+{
+    static $config;
+    if ($config === null) {
+        $config = require('config/app.php');
+    }
+    return $config;
+}
+
+function url($path)
+{   
+    $config = config();
+    $rootDir = $config['ROOT_DIR'] ?? '';
+    $rootDir = $rootDir ? '/' . $rootDir : '';
+    return $_SERVER['REQUEST_SCHEME'] . '://'. $_SERVER['HTTP_HOST'] . $rootDir  . '/' . $path;
+}

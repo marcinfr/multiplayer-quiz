@@ -1,18 +1,27 @@
 <?php
 $game = $this->getData('game');
+$player = $this->getData('player');
 ?>
-<a href="#" onclick="action('setPlayerReady')" id="button-ready">Gotowy</a>
+<a href="#" onclick="action('setPlayerReady')" id="button-ready" class="<?= !$player->has_answer ? 'ready' : ''?>">Gotowy</a>
 <div id="players-list">
     <?php foreach($this->getData('players') as $player): ?>
-        <?php 
-            if (app(\App\Models\Player::class)->hasCorrectAnswer($player, $game)) {
+        <?php
+            if (!$game->round) {
+                $class = '';
+            } else if (app(\App\Models\Player::class)->hasCorrectAnswer($player, $game)) {
                 $class = 'correct';
-            } else if ($player->last_selected_answer > 0) {
+            } else {
                 $class = 'incorrect';
             }
         ?>
-        <div class="player-row <?= $class ?>">
-            <div class="name"><?= $player->name ?></div>
+        <div class="player-row <?= $class ?? '' ?>">
+            <div class="name"><?= $player->name ?>
+                <?php if ($player->has_answer): ?>
+                    <span class="pending">(Oczekuje)</span>
+                <?php else: ?>
+                    <span class="ready">(Gotowy)</span>
+                <?php endif ?>
+            </div>
             <div class="points"><?= $player->total_points ?></div>
         </div>
     <?php endforeach ?>

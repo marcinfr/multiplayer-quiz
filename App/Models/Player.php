@@ -36,11 +36,7 @@ class Player extends DataObject
 
     public function hasCorrectAnswer($player, $game)
     {
-        if (!$player->last_selected_answer) {
-            return false;
-        }
-
-        $answerId = $player->last_selected_answer - 1;
+        $answerId = $player->last_selected_answer;
         $question = app(\App\Models\Game::class)->getQuestion($game);
         $answer = $question['answers'][$answerId] ?? null;
         return $answer['correct'] ?? false;

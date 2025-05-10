@@ -17,7 +17,9 @@ class Game extends DataObject
             $db = app(\App\DB::class);
             $connection = $db->getConnection();
             $sql = 'select * from game where id = ' . $player->game_id;
-            $this->games[$player->id] = $connection->query($sql)->fetch_object();
+            $game = $connection->query($sql)->fetch_object();
+            $game->config = json_decode($game->config);
+            $this->games[$player->id] = $game;
         }
         return $this->games[$player->id];
     }
@@ -30,6 +32,7 @@ class Game extends DataObject
             $connection = $db->getConnection();
 
             $sql = 'select * from player where game_id = ' . $game->id;
+            $sql .= ' order by total_points';
             $result = $connection->query($sql);
             while ($player = $result->fetch_object()) {
                 $game->players[] = $player;
@@ -51,10 +54,15 @@ class Game extends DataObject
 
     public function randomQuestion($game)
     {
-        $quizId = 8;
-        $questions = Quiz::getQuestions($quizId);
+        $quizIds = $game->config->quiz_ids ?? [];
+        $questions = [];
+        foreach ($quizIds as $quizId) {
+            $quizQesitions = Quiz::getQuestions($quizId);
+            $questions = array_merge($questions, $quizQesitions);
+        }
+
         $randomQuestionId = array_rand($questions);
-        $randomQuestion = Quiz::getQuestion($quizId, $randomQuestionId);
+        $randomQuestion = $questions[$randomQuestionId];
         $answers = [[
             'answer' => $randomQuestion['answer'],
             'correct' => true,

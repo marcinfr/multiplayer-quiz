@@ -7,7 +7,7 @@ $question = $this->getData('question');
 <div id="section-answers">
     <div id="answers-list">
         <?php foreach ($question['answers'] as $id => $answer): ?>
-            <div class="answer <?= $answer['class'] ?>" data-index="<?= $id + 1 ?>"><?= $answer['answer'] ?></div>
+            <div class="answer <?= $answer['class'] ?>" data-index="<?= $id ?>"><?= $answer['answer'] ?></div>
         <?php endforeach ?>
     </div>
 </div>
