@@ -16,7 +16,7 @@ class SaveQuiz extends \App\Controllers\AbstractController
             $id ++;
         }
 
-        $name = $this->getRequest()->getParam('name');;
+        $name = $this->getRequest()->getParam('name');
         $data[$id] = $name;
 
         $data = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

@@ -76,8 +76,13 @@ class Game extends DataObject
 
         shuffle($answers);
 
+        if (isset($randomQuestion['question_image'])) {
+            $questionImage = $randomQuestion['question_image']['path'];
+        }
+
         $game->current_question = json_encode([
             'question' => $randomQuestion['question'],
+            'question_image' => $questionImage ?? null,
             'answers' => $answers,
         ]);
         $this->update($game, ['current_question']);

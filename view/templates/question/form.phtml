@@ -1,47 +1,42 @@
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="pub/css/quiz.css">
-</head>
-<body>
-<?php $question = $this->getData('question'); ?>
-<div class="container">
-    <a href="quizForm?id=<?= $this->getData('quiz_id') ?>" class=back>Wróć</a>
-    <form method="post" action="saveQuestion">
-        <input type="hidden" name="quiz" value="<?= $this->getData('quiz_id') ?>" />
-        <input type="hidden" name="id" value="<?= $this->getData('question_id') ?? '' ?>" />
-        <div class="row">
-            <div class="col-25 text-right">
-                <label for="question">Pytanie</label>
-            </div>
-            <div class="col-75">
-                <textarea id="question" name="question" required placeholder="Pytanie.." style="height:200px"><?= $question['question'] ?? '' ?></textarea>
+<?php
+$question = $this->getData('question');
+?>
+<a href="quizForm?id=<?= $this->getData('quiz_id') ?>" class=back>Wróć</a>
+<form id="edit-form" method="post" action="saveQuestion">
+    <input type="hidden" name="quiz" value="<?= $this->getData('quiz_id') ?>" />
+    <input type="hidden" name="id" value="<?= $this->getData('question_id') ?? '' ?>" />
+    <div class="row row-2 question">
+        <label for="question">Pytanie</label>
+        <div class="input">
+            <div class="text-option">
+                <textarea name="question" required placeholder="Pytanie.." style="height:200px"><?= $question['question'] ?? '' ?></textarea>
             </div>
         </div>
-        <div class="row">
-            <div class="col-25 text-right">
-                <label for="answer">Poprawna Odpowiedź</label>
-            </div>
-            <div class="col-75">
-                <textarea id="answer" name="answer" required placeholder="Poprawna Odpowiedź.." style="height:200px"><?= $question['answer'] ?? '' ?></textarea>
-            </div>
+        <div class="input">
+            <?php $questionImage = $question['question_image'] ?? false ?>
+            <input type="text" placeholder="Image URL.." name="question-image" value="<?= $questionImage['url'] ?? '' ?>">
+            <?php if ($questionImage): ?>
+                <img src="<?= url('media/' . $questionImage['path'] ?? '') ?>">
+            <?php endif ?>
         </div>
-        <div class="row">
-            <div class="col-25 text-right">
-                <label for="answer">Błędne Odpowiedzi</label>
-            </div>
-            <div class="col-75">
-                <textarea id="wrong_answer_1" name="wrong_answer_1" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][0] ?? '' ?></textarea>
-                <br/>
-                <textarea id="wrong_answer_2" name="wrong_answer_2" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][1] ?? '' ?></textarea>
-                <br/>
-                <textarea id="wrong_answer_2" name="wrong_answer_3" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][2] ?? '' ?></textarea>
-            </div>
+    </div>
+    <div class="row">
+        <label for="answer">Poprawna Odpowiedź</label>
+        <div class="input">
+            <textarea id="answer" name="answer" required placeholder="Poprawna Odpowiedź.." style="height:200px"><?= $question['answer'] ?? '' ?></textarea>
         </div>
-        <div class="row">
-            <input type="submit" value="Zapisz">
+    </div>
+    <div class="row">
+        <label for="answer">Błędne Odpowiedzi</label>
+        <div class="input">
+            <textarea id="wrong_answer_1" name="wrong_answer_1" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][0] ?? '' ?></textarea>
+            <br/>
+            <textarea id="wrong_answer_2" name="wrong_answer_2" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][1] ?? '' ?></textarea>
+            <br/>
+            <textarea id="wrong_answer_2" name="wrong_answer_3" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][2] ?? '' ?></textarea>
         </div>
-    </form>
-</div>
-</body>
-</html>
+    </div>
+    <div class="row">
+        <div></div>
+        <input type="submit" value="Zapisz">
+    </div>

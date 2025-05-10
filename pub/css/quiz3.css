@@ -23,11 +23,6 @@
     resize: vertical;
   }
   
-  label {
-    padding-top: 12px;
-    display: inline-block;
-  }
-  
   a.back {
     background-color: #777777;
     text-decoration:none;
@@ -36,7 +31,6 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    display: inline-block;
     margin-top: 6px;
   }
 
@@ -94,47 +88,11 @@
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
-  height: 100%;
+  min-height: 100%;
 }
 
 .center-container {
   text-align: center;
-}
-  
-.col-25 {
-    float: left;
-    width: 25%;
-    padding-right: 10;
-}
-  
-.col-75 {
-    float: left;
-    width: 75%;
-}
-
-.col-50 {
-  float: left;
-  width: 50%;
-  padding-right: 10;
-}
-
-.text-right {
-  text-align: right
-}
-
-.text-left {
-  text-align: left
-}
-  
-.row {
-    margin-top: 6px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
 }
 
 #question-header {
@@ -150,6 +108,10 @@
   border-top: lightgrey solid 1px;
   border-bottom: lightgrey solid 1px;
   text-align: center;
+}
+
+#question-text img {
+  margin: 10px;
 }
 
 #answers-list {
@@ -265,6 +227,24 @@
    background-image: linear-gradient(to right , green, rgb(0, 186, 0), green);
 }
 
+#edit-form .row {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  margin-bottom: 10px;
+}
+
+#edit-form .question img {
+  margin: 10px;
+}
+
+#edit-form .row.row-2 {
+  grid-template-columns: 1fr 3fr 2fr;
+}
+
+#edit-form .row label {
+  margin: 10px 10px 10px 0;
+}
+
 @media screen and (max-width: 600px) {
   .col-25, .col-75, input[type=submit] {
     width: 100%;
@@ -273,5 +253,11 @@
   #answers-list {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4, 1fr);
+  }
+  #edit-form .row {
+    grid-template-columns: 1fr;
+  }
+  #edit-form .row.row-2 {
+    grid-template-columns: 1fr;
   }
 }

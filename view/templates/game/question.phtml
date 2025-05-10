@@ -1,9 +1,15 @@
 <?php
 $game = $this->getData('game');
 $question = $this->getData('question');
+$questionImage = $question['question_image'] ?? false;
 ?>
 <div id="question-header">Pytanie numer: <span id="question-number"><?= $game->round ?></span></div>
-<div id="question-text"><?= $question['question'] ?></div>
+<div id="question-text">
+    <?= $question['question'] ?>
+    <?php if ($questionImage): ?>
+        <div><img src="<?= url('media/' . $questionImage ?? '') ?>"></div>
+    <?php endif ?>
+</div>
 <div id="section-answers">
     <div id="answers-list">
         <?php foreach ($question['answers'] as $id => $answer): ?>

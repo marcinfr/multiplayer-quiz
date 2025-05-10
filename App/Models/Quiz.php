@@ -52,14 +52,10 @@ class Quiz
 		return $questions[$questionId] ?? [];
 	}
 
-	public static function saveQuestion(
+	public function saveQuestion(
 		int $quizId,
 		int $id,
-		string $questuion,
-		string $answer,
-		string $wrongAnswer1,
-		string $wrongAnswer2,
-		string $wrongAnswer3
+		array $data
 	) {
 		if (self::quizExists($quizId)) {
 			$questions = self::getQuestions($quizId);
@@ -67,20 +63,57 @@ class Quiz
 				$id = max(0, array_key_last($questions));
 				$id ++;
 			}
-			$questions[$id] = [
-				'question' => $questuion,
-				'answer' => $answer,
-				'wrong_answers' => [
-					$wrongAnswer1,
-					$wrongAnswer2,
-					$wrongAnswer3
-				]
-			];
+			$data['question_image'] = $this->saveImage($data['question_image']);
+			$questions[$id] = $data;
 			$quizFile = self::quizDir . '/' . $quizId . '.json';
 			$questions = json_encode($questions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 			if (!file_put_contents($quizFile, $questions)) {
     			die("Nie udało się zapisać");
 			}
+		}
+	}
+
+	public function saveImage($url)
+	{
+		if ($url) {
+			$savePath = md5($url) . time() . '.jpg';
+			$img = file_get_contents($url);
+			if (!$img) {
+				throw new \Exception("Nie udało się pobrać " . $url);
+			}
+			$sourceImage = \imagecreatefromstring($img);
+    		if ($sourceImage === false) {
+        		throw new \Exception("Nie udało się utworzyć obrazu.");
+    		}
+
+			$maxWidth = 250;
+			$maxHeight = 250;
+
+			$origWidth = \imagesx($sourceImage);
+    		$origHeight = \imagesy($sourceImage);
+
+			$aspectRatio = $origWidth / $origHeight;
+    		$newWidth = $maxWidth;
+    		$newHeight = $maxWidth / $aspectRatio;
+
+    		if ($newHeight > $maxHeight) {
+        		$newHeight = $maxHeight;
+        		$newWidth = $maxHeight * $aspectRatio;
+    		}
+
+			$newWidth = round($newWidth);
+			$newHeight = round($newHeight);
+
+			$resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+    		\imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
+    		\imagejpeg($resizedImage, ROOT_PATH . '/media/' . $savePath, 90);
+   	 		\imagedestroy($sourceImage);
+    		\imagedestroy($resizedImage);
+
+			return [
+				'url' => $url,
+				'path' => $savePath,
+			];
 		}
 	}
 }
