@@ -1,0 +1,11 @@
+
+<a href="." class="back">Wróć</a>
+<a href="quizForm" class="primary">Nowy Quiz</a>
+<table>
+    <?php foreach($this->getData('list') as $id => $name): ?>
+        <tr>
+            <td><?= $name ?></td>
+            <td><a href="quizForm?id=<?= $id ?>" class="primary">Edytuj</a></td>
+        </tr>
+    <?php endforeach ?>
+</table>
