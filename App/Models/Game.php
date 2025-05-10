@@ -32,7 +32,7 @@ class Game extends DataObject
             $connection = $db->getConnection();
 
             $sql = 'select * from player where game_id = ' . $game->id;
-            $sql .= ' order by total_points';
+            $sql .= ' order by total_points ASC';
             $result = $connection->query($sql);
             while ($player = $result->fetch_object()) {
                 $game->players[] = $player;
