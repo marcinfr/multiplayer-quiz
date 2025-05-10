@@ -62,7 +62,7 @@ class GameJson extends \App\Controllers\AbstractController
                         $class = 'incorrect';
                     }
                 } else {
-                    $class .= ' selected';
+                    $class = ' selected';
                 }
             } else {
                 $class = 'not-selected';
@@ -84,7 +84,10 @@ class GameJson extends \App\Controllers\AbstractController
     {
         $this->data['section-result'] = '';
         if ($this->getGame()->status == Game::STATUS_RESULT) {
-            $resultBlock = new \App\Block\Template('game/result.phtml', ['players' => $this->getPlayers()]);
+            $resultBlock = new \App\Block\Template('game/result.phtml', [
+                'game' => $this->getGame(),
+                'players' => $this->getPlayers(),
+            ]);
             $this->data['section-result'] = $resultBlock->getHtml();
         }
     }

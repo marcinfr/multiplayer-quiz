@@ -1,9 +1,19 @@
-<a href="#" onclick="action('setPlayerReady')" class="primary">Gotowy</a>
-<div id="section-players">
-    <h3><label>Gracze</label></h3>
-    <table id="list">
-        <?php foreach($this->getData('players') as $player): ?>
-            <tr><td><?= $player->name ?><td></tr>
-        <?php endforeach ?>
-    </table>
+<?php
+$game = $this->getData('game');
+?>
+<a href="#" onclick="action('setPlayerReady')" id="button-ready">Gotowy</a>
+<div id="players-list">
+    <?php foreach($this->getData('players') as $player): ?>
+        <?php 
+            if (app(\App\Models\Player::class)->hasCorrectAnswer($player, $game)) {
+                $class = 'correct';
+            } else if ($player->last_selected_answer > 0) {
+                $class = 'incorrect';
+            }
+        ?>
+        <div class="player-row <?= $class ?>">
+            <div class="name"><?= $player->name ?></div>
+            <div class="points"><?= $player->total_points ?></div>
+        </div>
+    <?php endforeach ?>
 </div>

@@ -18,7 +18,10 @@ class SelectAnswer extends \App\Controllers\AbstractController
             && $answerId
         ) {
             $player->last_selected_answer = $answerId;
-            app(Player::class)->update($player, ['last_selected_answer']);
+            if (app(Player::class)->hasCorrectAnswer($player, $game)) {
+                $player->total_points ++;
+            }
+            app(Player::class)->update($player, ['last_selected_answer', 'total_points']);
         }
     }
 }

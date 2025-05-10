@@ -171,6 +171,7 @@
   border: none;
   border-radius: 4px;
   min-height: 75px;
+  cursor: pointer;
 }
 
 .answer.not-selected:hover {
@@ -187,6 +188,47 @@
 
 .answer.incorrect {
   background-image: linear-gradient(to right , rgb(189, 0, 0), red, rgb(189, 0, 0));
+}
+
+#button-ready {
+  background-image: linear-gradient(to right , rgb(174, 113, 0), orange, rgb(174, 113, 0));
+  color: white;
+  text-decoration:none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 24px;
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  min-height: 75px;
+}
+
+.player-row {
+  background: lightgray;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+.player-row.correct {
+  background-image: linear-gradient(to right , green, rgb(0, 186, 0), green);
+}
+
+.player-row.incorrect {
+  background-image: linear-gradient(to right , rgb(189, 0, 0), red, rgb(189, 0, 0));
+}
+
+.player-row .points {
+  text-align: right;
 }
 
 @media screen and (max-width: 600px) {
