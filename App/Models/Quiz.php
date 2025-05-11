@@ -62,8 +62,17 @@ class Quiz
 			if (!isset($questions[$id])) {
 				$id = max(0, array_key_last($questions));
 				$id ++;
+				$currentImage = null;
+			} else {
+				$currentImage = $questions[$id]['question_image'] ?? null;
 			}
-			$data['question_image'] = $this->saveImage($data['question_image']);
+
+			if ($data['question_image'] !== ($currentImage['url'] ?? null)) {
+				$data['question_image'] = $this->saveImage($data['question_image']);
+			} else {
+				$data['question_image'] = $currentImage;
+			}
+
 			$questions[$id] = $data;
 			$quizFile = self::quizDir . '/' . $quizId . '.json';
 			$questions = json_encode($questions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

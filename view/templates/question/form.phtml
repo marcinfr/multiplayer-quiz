@@ -16,7 +16,7 @@ $question = $this->getData('question');
             <?php $questionImage = $question['question_image'] ?? false ?>
             <input type="text" placeholder="Image URL.." name="question-image" value="<?= $questionImage['url'] ?? '' ?>">
             <?php if ($questionImage): ?>
-                <img src="<?= url('media/' . $questionImage['path'] ?? '') ?>">
+                <img src="<?= url('media/' . ($questionImage['path'] ?? '')) ?>">
             <?php endif ?>
         </div>
     </div>
