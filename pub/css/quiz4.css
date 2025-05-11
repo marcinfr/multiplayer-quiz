@@ -87,12 +87,16 @@
 .container {
   border-radius: 5px;
   background-color: #f2f2f2;
-  padding: 20px;
   min-height: 100%;
+  position: relative;
 }
 
 .center-container {
   text-align: center;
+}
+
+#game-content {
+  padding: 20px;
 }
 
 #question-header {
@@ -243,6 +247,31 @@
 
 #edit-form .row label {
   margin: 10px 10px 10px 0;
+}
+
+#game-menu {
+  position: absolute;
+  height: 100%;
+}
+
+#game-menu #menu-content {
+  display: none;
+  background-image: linear-gradient(to right , #f2f2f2, lightgray);
+  position: absolute;
+  padding: 20px;
+  padding-top: 50px;
+  height: 100%;
+  min-width: 200px;
+}
+
+#game-menu a.hamburger-icon {
+  display: block;
+  position: absolute;
+  margin: 20px;
+}
+
+#game-menu a.hamburger-icon a:hover {
+  color: black;
 }
 
 @media screen and (max-width: 600px) {

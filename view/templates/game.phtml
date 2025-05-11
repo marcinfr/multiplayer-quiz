@@ -1,13 +1,27 @@
-<div id="section-result">
+<div id="game-menu">
+  <div id="menu-content">
+    <a href="#">Zakończ grę</a>
+  </div>
+  <a href="#" class="hamburger-icon" onclick="toogleMenu()">
+    <i class="fa fa-bars"></i>
+  </a>
 </div>
-<div id="section-question">
+<div id="game-content">
+    <div id="section-result">
+    </div>
+    <div id="section-question">
+    </div>
 </div>
 <script>
-    function action(actionUrl)
-    {
-        $.ajax({
-            type : 'GET',
-            url : actionUrl,
-        });
-    }
+function action(actionUrl)
+{
+    $.ajax({
+        type : 'GET',
+        url : actionUrl,
+    });
+}
+function toogleMenu() {
+    var menuContent = $('#menu-content');
+    menuContent.toggle();
+}
 </script>
