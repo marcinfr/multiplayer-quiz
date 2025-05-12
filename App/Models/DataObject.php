@@ -34,6 +34,7 @@ class DataObject
         $fields = implode(',', $fields);
         $values = implode(',', $values);
         $sql = 'insert into ' . $this->table . ' (' . $fields . ') values(' . $values . ')';
+
         $this->getConnection()->query($sql);
         $obj->$idField = $this->getConnection()->insert_id;
     }
