@@ -1,5 +1,4 @@
 <form id="form" method="post" action="create">
-    <input type="hidden" name="name" value="<?= $this->getRequest()->getParam('name') ?>" />
     <input type="submit" value="Stwórz" id="button-ready">
     <?php
         $list = app(\App\Models\Quiz::class)->getList();

@@ -44,6 +44,7 @@ createTable(
         'last_selected_answer smallint unsigned default null',
         'has_answer smallint unsigned default 0',
         'total_points smallint unsigned default 0',
-        'last_activity_timestamp int unsigned'
+        'last_activity_timestamp int unsigned',
+        'view_type varchar(255)',
     ]
 );

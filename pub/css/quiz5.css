@@ -99,9 +99,14 @@
   padding: 20px;
 }
 
+#game-content #game-name {
+  text-align: center;
+  color: grey;
+}
+
 #question-header {
+  text-align: center;
   font-size: 15px;
-  text-align: right;
   color: grey;
 }
 
@@ -231,6 +236,11 @@
    background-image: linear-gradient(to right , green, rgb(0, 186, 0), green);
 }
 
+#edit-form {
+  padding: 20px;
+  align-items: center;
+}
+
 #edit-form .row {
   display: grid;
   grid-template-columns: 1fr 5fr;
@@ -247,6 +257,52 @@
 
 #edit-form .row label {
   margin: 10px 10px 10px 0;
+}
+
+#select-game-form {
+  margin: 20px;
+}
+
+#select-game-form .row.input {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+#select-game-form .row.button {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  text-align: center;
+}
+
+#select-game-form .row.input>label {
+  text-align: right;
+  padding: 10px 10px 10px 0;
+}
+
+.radio-as-buttons {
+  margin-top: 6px;
+  display: flex;
+  width: 100%;
+  gap: 1px;
+}
+
+.radio-as-buttons input[type="radio"] {
+  display: none;
+}
+
+.radio-as-buttons label {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  color: gray;
+  background-color: rgb(234, 234, 234);
+}
+
+.radio-as-buttons input[type="radio"]:checked + label {
+  background-color: #04AA6D;
+  color: white;
 }
 
 #game-menu {
@@ -287,6 +343,15 @@
     grid-template-columns: 1fr;
   }
   #edit-form .row.row-2 {
+    grid-template-columns: 1fr;
+  }
+  #select-game-form .row.input>label {
+    text-align: left;
+  }
+  #select-game-form .row.input {
+    grid-template-columns: 1fr;
+  }
+  #select-game-form .row.button {
     grid-template-columns: 1fr;
   }
 }

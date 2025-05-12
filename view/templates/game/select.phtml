@@ -1,33 +1,40 @@
+<?php
+$player = $this->getData('player');
+?>
 <a href="." class=back>Wróć</a>
-<form id="form" method="post">
+<form id="select-game-form" method="post">
     <input type="hidden" name="game_id" id="game_id"/>
-    <div class="row">
-        <div class="col-25 text-right">
-            <label for="name">Twoje imie</label>
+    <div class="row input">
+        <label for="name">Twoje imie</label>
+        <div class="input">
+            <input type="text" id="name" name="name" placeholder="Twoje imię ..." value="<?= $player->name ?? '' ?>" required>
         </div>
-        <div class="col-75">
-            <input type="text" id="name" name="name" placeholder="Twoje imię ..." required>
-        </div>
-        <table>
-            <tr>
-                <td class="center-container">
-                    <a href="#" onclick="selectGame('game/form', 0)" class="primary">Nowa Gra</a>
-                </td>
-            </tr>
-            <?php foreach($this->getData('active_games') as $game): ?>
-                <tr>
-                    <td class="center-container">
-                        <a href="#" onclick="selectGame('game/join', <?= $game['id'] ?>)" class="primary"><?= $game['creator'] ?></a>
-                    </td>
-                </tr>
-            <?php endforeach ?>
-        </table>
     </div>
+        <div class="row input">
+        <label for="name">Widok</label>
+        <div class="input radio-as-buttons">
+            <?php foreach($this->getData('view_types') as $id => $viewType): ?>
+                <?php $selected = $viewType['selected'] ? 'checked' : '' ?>
+                <input type="radio" id="view-type-<?= $id ?>" name="view-type" value="<?= $viewType['value'] ?>" <?= $selected ?>>
+                <label for="view-type-<?= $id ?>"><?= $viewType['label'] ?></label>
+            <?php endforeach ?>
+        </div>
+    </div>
+    <div class="row button">
+        <div></div>
+        <a href="#" onclick="selectGame('game/form', 0)" class="primary">Nowa Gra</a>
+    </div>
+    <?php foreach($this->getData('active_games') as $game): ?>
+        <div class="row button">
+            <div></div>
+            <a href="#" onclick="selectGame('game/join', <?= $game['id'] ?>)" class="primary">Gra #<?= $game['id'] ?> (<?= $game['creator'] ?>)</a>
+        </div>
+    <?php endforeach ?>
 </form>
 <script>
     function selectGame(action, gameId)
     {
-        let form = $("#form");
+        let form = $("#select-game-form");
         form[0].action = action;
         if (form[0].checkValidity()) {
             $("#game_id").val(gameId);

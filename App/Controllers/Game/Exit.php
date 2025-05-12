@@ -5,14 +5,15 @@
  */
 namespace App\Controllers\Game;
 
-use App\Models\Game;
+use App\Models\Player;
 
 class ExitAction extends \App\Controllers\AbstractController
 {
     public function execute()
     {
-        $player = app(\App\Models\Player::class)->getCurrentPlayer();
-        app(Game::class)->deletePlayer($player);
+        $player = app(Player::class)->getCurrentPlayer();
+        $player->game_id = null;
+        app(Player::class)->update($player, ['game_id']);
         return app(\App\Response\Redirect::class)->setUrl(url(''));
     }
 }

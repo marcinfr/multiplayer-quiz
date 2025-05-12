@@ -70,9 +70,23 @@ class GameJson extends \App\Controllers\AbstractController
             $question['answers'][$id]['class'] = $class;
         }
 
+        if ($this->getCurrentPlayer()->view_type == Player::VIEW_TYPE_CONTROLLER) {
+            $showQuestion = false;
+        } else {
+            $showQuestion = true;
+        }
+
+        if ($this->getCurrentPlayer()->view_type == Player::VIEW_TYPE_HOST) {
+            $showAnserws = false;
+        } else {
+            $showAnserws = true;
+        }
+        
         $questionBlock =  new \App\Block\Template('game/question.phtml', [
             'game' => $this->getGame(),
             'question' => $question,
+            'show_question' => $showQuestion,
+            'show_answers' => $showAnserws,
         ]);
 
         $this->data['section-question'] = $questionBlock->getHtml();
@@ -95,22 +109,26 @@ class GameJson extends \App\Controllers\AbstractController
 
     private function isRoundEnded()
     {
+        $hasPlayers = false;
         foreach ($this->getPLayers() as $player) {
             if (!$player->has_answer) {
                 return false;
             }
+            $hasPlayers = true;
         }
-        return true;
+        return $hasPlayers;
     }
 
     private function allPlayersReady()
     {
+        $hasPlayers = false;
         foreach($this->getPlayers() as $player) {
             if ($player->has_answer) {
                 return false;
             }
+            $hasPlayers = true;
         }
-        return true;
+        return $hasPlayers;
     }
 
     private function updateGameStatus()

@@ -24,14 +24,6 @@ class Game extends DataObject
         return $this->games[$player->id];
     }
 
-    public function deletePlayer($player)
-    {
-        $db = app(\App\DB::class);
-        $connection = $db->getConnection();
-        $sql = 'delete from player where id = ' . $player->id;
-        $connection->query($sql);
-    }
-
     public function getPlayers($game)
     {
         if (!isset($game->players)) {
@@ -43,7 +35,9 @@ class Game extends DataObject
             $sql .= ' order by total_points ASC';
             $result = $connection->query($sql);
             while ($player = $result->fetch_object()) {
-                $game->players[] = $player;
+                if ($player->view_type !== \App\Models\Player::VIEW_TYPE_HOST) {
+                    $game->players[] = $player;
+                }
             }
         }
         return $game->players;

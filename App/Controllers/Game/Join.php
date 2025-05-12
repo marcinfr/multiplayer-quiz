@@ -6,12 +6,15 @@ class Join extends \App\Controllers\AbstractController
 {
     public function execute()
     {
-        $name = $this->getRequest()->getParam('name');
-        $gameId = $this->getRequest()->getParam('game_id');
         $player = app(\App\Models\Player::class)->getCurrentPlayer();
-        
-        $player->game_id = $gameId;
-        $player->name = $name;
+        if ($name = $this->getRequest()->getParam('name')) {
+            $player->name = $name;
+        }
+        if ($view_type = $this->getRequest()->getParam('view_type')) {
+            $player->view_type = $view_type;
+        }
+
+        $player->game_id = $this->getRequest()->getParam('game_id');
         $player->is_host = 0;
         $player->has_answer = 1;
         $player->total_points = 0;

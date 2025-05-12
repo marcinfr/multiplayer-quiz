@@ -4,6 +4,10 @@ namespace App\Models;
 
 class Player extends DataObject
 {
+    const VIEW_TYPE_HOST = "host";
+    const VIEW_TYPE_NORMAL = "normal";
+    const VIEW_TYPE_CONTROLLER = "controller";
+
     protected string $table = 'player';
     private $players = [];
 
@@ -40,5 +44,33 @@ class Player extends DataObject
         $question = app(\App\Models\Game::class)->getQuestion($game);
         $answer = $question['answers'][$answerId] ?? null;
         return $answer['correct'] ?? false;
+    }
+
+    public function getViewTypeOptions($player)
+    {
+        $options = [
+            self::VIEW_TYPE_HOST => [
+                'label' => 'Host',
+                'value' => self::VIEW_TYPE_HOST,
+                'selected' => false,
+            ],
+            self::VIEW_TYPE_NORMAL => [
+                'label' => 'Normal',
+                'value' => self::VIEW_TYPE_NORMAL,
+                'selected' => false,
+            ],
+            self::VIEW_TYPE_CONTROLLER => [
+                'label' => 'Kontroler',
+                'value' => self::VIEW_TYPE_CONTROLLER,
+                'selected' => false,
+            ],
+        ];
+
+        $selected = self::VIEW_TYPE_NORMAL;
+        $viewType = $player->view_type ?? self::VIEW_TYPE_NORMAL;
+        $selected = $options[$viewType] ?  $viewType : self::VIEW_TYPE_NORMAL;
+        $options[$selected]['selected'] = true;
+
+        return $options;
     }
 } 

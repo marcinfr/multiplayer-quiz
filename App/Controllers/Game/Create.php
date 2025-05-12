@@ -16,13 +16,14 @@ class Create extends \App\Controllers\AbstractController
         ];
 
         $game = (object) [
-                'creator' => $this->getRequest()->getParam('name'),
-                'status' => \App\Models\Game::STATUS_RESULT,
-                'config' => json_encode($config),
-            ];
+            'creator' => $this->getRequest()->getParam('name'),
+            'status' => \App\Models\Game::STATUS_RESULT,
+            'config' => json_encode($config),
+        ];
 
         app(\App\Models\Game::class)->save($game);
+
         return app(\App\Response\Redirect::class)
-            ->setUrl('join?game_id=' . $game->id . '&name=' . $this->getRequest()->getParam('name'));
+            ->setUrl('join?game_id=' . $game->id);
     }
 }
