@@ -55,6 +55,18 @@
     background-color: #888888;
   }
 
+  a.button {
+    background-color: #04AA6D;
+    text-decoration:none;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 6px;
+  }
+
   a.primary {
     background-color: #04AA6D;
     text-decoration:none;
@@ -67,7 +79,12 @@
     margin-top: 6px;
   }
 
-  a.back:primary {
+  a.danger {
+    background-color: #d52600;
+    color: white;
+  }
+
+  a.back:hover {
     background-color: #45a049;
   }
 
@@ -108,14 +125,13 @@
   text-align: center;
   font-size: 15px;
   color: grey;
+  margin-bottom: 10px;
 }
 
 #question-text {
   font-size: 24px;
   padding: 30px 0;
-  margin: 10px;
   border-top: lightgrey solid 1px;
-  border-bottom: lightgrey solid 1px;
   text-align: center;
 }
 
@@ -127,6 +143,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  padding-top: 10px;
+  border-top: lightgrey solid 1px;
 }
 
 .answer {
@@ -296,8 +314,8 @@
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
-  color: gray;
-  background-color: rgb(234, 234, 234);
+  color: grey;
+  background-color: darkgray;
 }
 
 .radio-as-buttons input[type="radio"]:checked + label {
@@ -317,7 +335,12 @@
   padding: 20px;
   padding-top: 50px;
   height: 100%;
-  min-width: 200px;
+  min-width: 300px;
+}
+
+#game-menu #menu-content a {
+  width: 100%;
+  text-align: center;
 }
 
 #game-menu a.hamburger-icon {

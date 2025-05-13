@@ -15,8 +15,8 @@ $player = $this->getData('player');
         <div class="input radio-as-buttons">
             <?php foreach($this->getData('view_types') as $id => $viewType): ?>
                 <?php $selected = $viewType['selected'] ? 'checked' : '' ?>
-                <input type="radio" id="view-type-<?= $id ?>" name="view-type" value="<?= $viewType['value'] ?>" <?= $selected ?>>
-                <label for="view-type-<?= $id ?>"><?= $viewType['label'] ?></label>
+                <input type="radio" id="view_type-<?= $id ?>" name="view_type" value="<?= $viewType['value'] ?>" <?= $selected ?>>
+                <label for="view_type-<?= $id ?>"><?= $viewType['label'] ?></label>
             <?php endforeach ?>
         </div>
     </div>

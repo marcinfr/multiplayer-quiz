@@ -1,6 +1,13 @@
 <div id="game-menu">
   <div id="menu-content">
-    <a href="game/exit">Opuść grę</a>
+      <div class="input radio-as-buttons">
+          <?php foreach(app(\App\Models\Player::class)->getViewTypeOptions($this->getData('player')) as $id => $viewType): ?>
+              <?php $selected = $viewType['selected'] ? 'checked' : '' ?>
+              <input type="radio" id="view_type-<?= $id ?>" name="view_type" value="<?= $viewType['value'] ?>" onclick="updateViewType(this)" <?= $selected ?>>
+              <label for="view_type-<?= $id ?>"><?= $viewType['label'] ?></label>
+          <?php endforeach ?>
+      </div>
+        <a href="game/exit" class="button danger">Opuść grę</a>
   </div>
   <a href="#" class="hamburger-icon" onclick="toogleMenu()">
     <i class="fa fa-bars"></i>
@@ -26,5 +33,13 @@ function action(actionUrl)
 function toogleMenu() {
     var menuContent = $('#menu-content');
     menuContent.toggle();
+}
+function updateViewType(elem) {
+    if (elem.checked) {
+        $.ajax({
+            type: 'GET',
+            url: '<?= url('player/updateGameView?view_type=') ?>' + elem.value
+        });
+    }
 }
 </script>

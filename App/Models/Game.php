@@ -13,6 +13,9 @@ class Game extends DataObject
 
     public function getByPlayer($player)
     {
+        if (!$player->id) {
+            return false;
+        }
         if (!isset($this->games[$player->id])) {
             $db = app(\App\DB::class);
             $connection = $db->getConnection();
