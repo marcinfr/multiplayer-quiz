@@ -232,6 +232,7 @@
   margin: 5px;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 #quiz-checkboxes input {
@@ -240,6 +241,10 @@
 
 #quiz-checkboxes input[type="checkbox"]:checked + label {
    background-image: linear-gradient(to right , green, rgb(0, 186, 0), green);
+}
+
+#quiz-checkboxes .question-provider-options {
+  margin: 0 20px;
 }
 
 #edit-form {

@@ -13,11 +13,11 @@ namespace App\Models\Game\QuestionProvider;
 
 class MathTasks
 {
-    public function getOptions()
+    public $label = "Zadania matematyczne";
+
+    public function getOptionsBlock()
     {
-        return [
-            'Zadania Matematyczne'
-        ];
+        return false;
     }
 
     public function getQuestion($game)
@@ -55,7 +55,7 @@ class MathTasks
         $y = rand(0, 10);
         $correct = $y * $x;
         return [
-            'question' => $y . ' x ' . $x . ' = ?',
+            'question' => $y . ' · ' . $x . ' = ?',
             'answers' => $this->getAnswers($correct),
         ];
     }

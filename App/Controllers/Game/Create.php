@@ -7,10 +7,13 @@ class Create extends \App\Controllers\AbstractController
     public function execute()
     {
         $questions = $this->getRequest()->getParam('questions');
-        if (!$questions) {
-            throw new \Exception("Nie wybrałeś pytań");
-        } 
-
+        foreach($questions as $providerCode => $config) {
+            $isSelected = $config['selected'] ?? false;
+            if (!$isSelected) {
+                unset($questions[$providerCode]);
+            }
+        }
+        
         $config = [
             'questions' => $questions,
         ];

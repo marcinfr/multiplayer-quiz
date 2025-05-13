@@ -16,7 +16,7 @@ class Game extends \App\Controllers\AbstractController
             'game' => $game,
             'player' => $player,
         ]);
-        app(\App\Block\Page::class)->addJs('pub/js/game.js');
+        app(\App\Block\Page::class)->addJs('pub/js/game3.js');
         app(\App\Block\Page::class)->addChild($content, 'content');
         return app(\App\Response\Page::class);
     }
