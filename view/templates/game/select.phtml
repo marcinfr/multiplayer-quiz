@@ -22,12 +22,12 @@ $player = $this->getData('player');
     </div>
     <div class="row button">
         <div></div>
-        <a href="#" onclick="selectGame('game/form', 0)" class="primary">Nowa Gra</a>
+        <a href="#" onclick="selectGame('game/form', 0)" class="button primary">Nowa Gra</a>
     </div>
     <?php foreach($this->getData('active_games') as $game): ?>
         <div class="row button">
             <div></div>
-            <a href="#" onclick="selectGame('game/join', <?= $game['id'] ?>)" class="primary">Gra #<?= $game['id'] ?> (<?= $game['creator'] ?>)</a>
+            <a href="#" onclick="selectGame('game/join', <?= $game['id'] ?>)" class="button">Gra #<?= $game['id'] ?> (<?= $game['creator'] ?>)</a>
         </div>
     <?php endforeach ?>
 </form>

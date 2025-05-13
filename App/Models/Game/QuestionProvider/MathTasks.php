@@ -55,7 +55,7 @@ class MathTasks
         $y = rand(0, 10);
         $correct = $y * $x;
         return [
-            'question' => $y . ' * ' . $x . ' = ?',
+            'question' => $y . ' x ' . $x . ' = ?',
             'answers' => $this->getAnswers($correct),
         ];
     }
@@ -66,7 +66,7 @@ class MathTasks
         $correct = rand(0, 10);
         $x = $y * $correct;
         return [
-            'question' => $x . ' / ' . $y . ' = ?',
+            'question' => $x . ' : ' . $y . ' = ?',
             'answers' => $this->getAnswers($correct),
         ];
     }

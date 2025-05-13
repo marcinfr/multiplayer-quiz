@@ -10,7 +10,7 @@
         <?php foreach($this->getData('questions') as $id => $data): ?>
             <tr>
                 <td><?= $data['question'] ?? '' ?></td>
-                <td><a href="questionForm?quiz=<?= $this->getData('quiz_id') ?>&id=<?= $id ?>" class="primary">Edytuj</a></td>
+                <td><a href="questionForm?quiz=<?= $this->getData('quiz_id') ?>&id=<?= $id ?>" class="button">Edytuj</a></td>
             </tr>
         <?php endforeach ?>
     </table>
