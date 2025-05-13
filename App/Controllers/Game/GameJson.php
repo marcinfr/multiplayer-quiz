@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Game;
 
-use \App\Models\Game;
-use \App\Models\Player;
+use App\Models\Game;
+use App\Models\Player;
 
 class GameJson extends \App\Controllers\AbstractController
 {

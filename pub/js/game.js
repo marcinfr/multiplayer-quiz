@@ -1,7 +1,7 @@
 var update = function() {
     $.ajax({
        type : 'GET',
-       url : 'gameJson',
+       url : 'game/gameJson',
        success : function(data){
             let parsedData = JSON.parse(data);
             if (gameHash == parsedData['hash']) {

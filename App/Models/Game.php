@@ -59,37 +59,9 @@ class Game extends DataObject
 
     public function randomQuestion($game)
     {
-        $quizIds = $game->config->quiz_ids ?? [];
-        $questions = [];
-        foreach ($quizIds as $quizId) {
-            $quizQesitions = Quiz::getQuestions($quizId);
-            $questions = array_merge($questions, $quizQesitions);
-        }
-
-        $randomQuestionId = array_rand($questions);
-        $randomQuestion = $questions[$randomQuestionId];
-        $answers = [[
-            'answer' => $randomQuestion['answer'],
-            'correct' => true,
-        ]];
-        $wrongAnswers = $randomQuestion['wrong_answers'] ?? [];
-        foreach ($wrongAnswers as $answer) {
-            $answers[] = [
-                'answer' => $answer
-            ];
-        }
-
-        shuffle($answers);
-
-        if (isset($randomQuestion['question_image'])) {
-            $questionImage = $randomQuestion['question_image']['path'];
-        }
-
-        $game->current_question = json_encode([
-            'question' => $randomQuestion['question'],
-            'question_image' => $questionImage ?? null,
-            'answers' => $answers,
-        ]);
+        $questionProvider = app(\App\Models\Game\QuestionProvider\QuestionLists::class);
+        //$questionProvider = app(\App\Models\Game\QuestionProvider\MathTasks::class);
+        $game->current_question = $questionProvider->getQuestion($game);
         $this->update($game, ['current_question']);
     }
 
