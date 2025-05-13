@@ -13,6 +13,13 @@ namespace App\Models\Game\QuestionProvider;
 
 class MathTasks
 {
+    public function getOptions()
+    {
+        return [
+            'Zadania Matematyczne'
+        ];
+    }
+
     public function getQuestion($game)
     {
         $questionTypes = ['getPlus', 'getMinus', 'getMultiplication', 'getDivision'];
@@ -55,7 +62,7 @@ class MathTasks
 
     protected function getDivisionQuestion()
     {
-        $y = rand(0, 10);
+        $y = rand(1, 10);
         $correct = rand(0, 10);
         $x = $y * $correct;
         return [

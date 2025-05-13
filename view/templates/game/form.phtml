@@ -1,12 +1,14 @@
 <form id="form" method="post" action="create">
     <input type="submit" value="Stwórz" id="button-ready">
     <?php
-        $list = app(\App\Models\Quiz::class)->getList();
+        $providers = app(\App\Models\Game::class)->getQuestionProviders();
     ?>
     <div id="quiz-checkboxes">
-        <?php foreach ($list as $id => $quiz): ?>
-            <input type="checkbox" id="quiz-<?= $id ?>" name="quiz[]" value="<?= $id ?>">
-            <label for="quiz-<?= $id ?>"><?= $quiz ?></label>
+        <?php foreach ($providers as $providerId => $provider): ?>
+            <?php foreach ($provider->getOptions() as $id => $option): ?>
+                <input type="checkbox" id="quiz-<?= $id ?>" name="questions[<?= $providerId ?>][options][]" value="<?= $id ?>">
+                <label for="quiz-<?= $id ?>"><?= $option ?></label>
+            <?php endforeach ?>
         <?php endforeach ?>
     </div>
 </form>

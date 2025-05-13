@@ -6,13 +6,13 @@ class Create extends \App\Controllers\AbstractController
 {
     public function execute()
     {
-        $quizIds = $this->getRequest()->getParam('quiz');
-        if (!$quizIds) {
-            throw new \Exception("Nie wybrałeś quizu");
+        $questions = $this->getRequest()->getParam('questions');
+        if (!$questions) {
+            throw new \Exception("Nie wybrałeś pytań");
         } 
 
         $config = [
-            'quiz_ids' => $quizIds,
+            'questions' => $questions,
         ];
 
         $game = (object) [

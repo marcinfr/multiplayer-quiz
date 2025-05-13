@@ -57,11 +57,21 @@ class Game extends DataObject
         return $game->question;
     }
 
+    public function getQuestionProviders()
+    {
+        return [
+            'question_list' =>  app(\App\Models\Game\QuestionProvider\QuestionLists::class),
+            'math_tasks' => app(\App\Models\Game\QuestionProvider\MathTasks::class),
+        ];
+    }
+
     public function randomQuestion($game)
     {
-        $questionProvider = app(\App\Models\Game\QuestionProvider\QuestionLists::class);
-        //$questionProvider = app(\App\Models\Game\QuestionProvider\MathTasks::class);
-        $game->current_question = $questionProvider->getQuestion($game);
+        $questions = (array) $game->config->questions;
+        $questionProviders = $this->getQuestionProviders();
+        $providerId = array_rand($questions);
+        $questionProvider = $questionProviders[$providerId];
+        $game->current_question = $questionProvider->getQuestion((array) $questions[$providerId]);
         $this->update($game, ['current_question']);
     }
 

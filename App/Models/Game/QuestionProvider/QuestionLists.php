@@ -9,9 +9,14 @@ use App\Models\Quiz;
 
 class QuestionLists
 {
-    public function getQuestion($game)
+    public function getOptions()
     {
-        $quizIds = $game->config->quiz_ids ?? [];
+        return Quiz::getList();
+    }
+
+    public function getQuestion($options)
+    {
+        $quizIds = $options['options'] ?? [];
         $questions = [];
         foreach ($quizIds as $quizId) {
             $quizQesitions = Quiz::getQuestions($quizId);
