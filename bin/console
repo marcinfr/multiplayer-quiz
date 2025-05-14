@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+
+define('ROOT_PATH', __DIR__ . '/../');
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../App/app.php';
+
+$consoleDir = 'App/Console';
+$files = scandir($consoleDir);
+
+$commandCode = $argv[1] ?? null;
+
+$commands = [];
+foreach ($files as $file) {
+    if ($file !== '.' && $file !== '..') {
+        list($class,) = explode(".", $file);
+        include_once($consoleDir . '/' . $file);
+        if (!class_exists($class)) {
+            throw new \Exception('Class "' . $class . '" not found!');
+        }
+        $command = new $class();
+        $commands[$command->command] = $command;
+    }
+}
+
+if (!$commandCode) {
+    foreach (array_keys($commands) as $command) {
+        echo $command . "\n";
+    }
+} elseif (isset($commands[$commandCode])) {
+    $class = $commands[$commandCode];
+    $class->execute();
+} else {
+    throw new \Exception('Incorrect ' . $commandCode . ' command coe');
+}
