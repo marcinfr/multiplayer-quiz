@@ -1,13 +1,4 @@
 <?php
-/**
- * Copyright © Alekseon sp. z o.o.
- * http://www.alekseon.com/
- */
-
-/**
- * Copyright © Alekseon sp. z o.o.
- * http://www.alekseon.com/
- */
 
 namespace App\Models\Game\QuestionProvider;
 
