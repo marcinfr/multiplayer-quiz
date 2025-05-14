@@ -31,6 +31,8 @@ class Countries
             ];
         }
 
+        shuffle($answers);
+
         $question = [
             'question' => 'Którego państwa jest ta flaga:',
             'question_image' =>  $correctCountry['flag'],
