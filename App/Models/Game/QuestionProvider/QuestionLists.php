@@ -9,9 +9,11 @@ use App\Models\Quiz;
 
 class QuestionLists
 {
-    public function getOptions()
+    public $label = "Listy Pytań";
+
+    public function getOptionsBlock(array $params = [])
     {
-        return Quiz::getList();
+        return new \App\Block\Template('game/form/questionLists.phtml', $params);
     }
 
     public function getQuestion($options)

@@ -5,10 +5,27 @@
     ?>
     <div id="quiz-checkboxes">
         <?php foreach ($providers as $providerId => $provider): ?>
-            <?php foreach ($provider->getOptions() as $id => $option): ?>
-                <input type="checkbox" id="quiz-<?= $id ?>" name="questions[<?= $providerId ?>][options][]" value="<?= $id ?>">
-                <label for="quiz-<?= $id ?>"><?= $option ?></label>
-            <?php endforeach ?>
+            <input type="checkbox" 
+                id="provider-<?= $providerId ?>" 
+                name="questions[<?= $providerId ?>][selected]" 
+                value="1"
+                onclick="providerSelected(this)">
+            <label for="provider-<?= $providerId ?>"><?= $provider->label ?></label>
+            <div id="provider-<?= $providerId ?>-options" class="question-provider-options" style="display:none">
+                <?php if ($optionsBlock = $provider->getOptionsBlock(['provider_id' => $providerId])): ?>
+                    <?= $optionsBlock->getHtml() ?>
+                <?php endif ?>
+            </div>
         <?php endforeach ?>
     </div>
 </form>
+<script>
+function providerSelected(elem) {
+    let optionsContenerId = elem.id + "-options";
+    if (elem.checked) {
+        $("#" + optionsContenerId).show();
+    } else {
+        $("#" + optionsContenerId).hide();
+    }
+}
+</script>

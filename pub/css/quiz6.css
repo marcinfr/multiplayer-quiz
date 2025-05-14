@@ -56,7 +56,7 @@
   }
 
   a.button {
-    background-color: #04AA6D;
+    background-color: gray;
     text-decoration:none;
     color: white;
     padding: 12px 20px;
@@ -67,25 +67,13 @@
     margin-top: 6px;
   }
 
-  a.primary {
+  a.button.primary {
     background-color: #04AA6D;
-    text-decoration:none;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    margin-top: 6px;
   }
 
-  a.danger {
+  a.button.danger {
     background-color: #d52600;
     color: white;
-  }
-
-  a.back:hover {
-    background-color: #45a049;
   }
 
   input[type=submit] {
@@ -244,6 +232,7 @@
   margin: 5px;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 #quiz-checkboxes input {
@@ -252,6 +241,10 @@
 
 #quiz-checkboxes input[type="checkbox"]:checked + label {
    background-image: linear-gradient(to right , green, rgb(0, 186, 0), green);
+}
+
+#quiz-checkboxes .question-provider-options {
+  margin: 0 20px;
 }
 
 #edit-form {
@@ -347,6 +340,7 @@
   display: block;
   position: absolute;
   margin: 20px;
+  color: gray;
 }
 
 #game-menu a.hamburger-icon a:hover {
