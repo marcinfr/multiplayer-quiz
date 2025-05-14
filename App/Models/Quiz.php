@@ -52,6 +52,11 @@ class Quiz
 		return $questions[$questionId] ?? [];
 	}
 
+    public function getImagesDirPath()
+    {
+        return ROOT_PATH . '/media/';
+    }
+
 	public function saveQuestion(
 		int $quizId,
 		int $id,
@@ -69,6 +74,7 @@ class Quiz
 
 			if ($data['question_image'] !== ($currentImage['url'] ?? null)) {
 				$data['question_image'] = $this->saveImage($data['question_image']);
+                $this->removeImage($currentImage);
 			} else {
 				$data['question_image'] = $currentImage;
 			}
@@ -81,6 +87,14 @@ class Quiz
 			}
 		}
 	}
+
+    public function removeImage($image)
+    {
+        $path = $image['path'] ?? false;
+        if ($path) {
+            @unlink($this->getImagesDirPath() . $path);
+        }
+    }
 
 	public function saveImage($url)
 	{
@@ -115,7 +129,7 @@ class Quiz
 
 			$resizedImage = imagecreatetruecolor($newWidth, $newHeight);
     		\imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
-    		\imagejpeg($resizedImage, ROOT_PATH . '/media/' . $savePath, 90);
+    		\imagejpeg($resizedImage, $this->getImagesDirPath() . $savePath, 90);
    	 		\imagedestroy($sourceImage);
     		\imagedestroy($resizedImage);
 
