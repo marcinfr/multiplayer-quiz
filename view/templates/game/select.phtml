@@ -27,7 +27,7 @@ $player = $this->getData('player');
     <?php foreach($this->getData('active_games') as $game): ?>
         <div class="row button">
             <div></div>
-            <a href="#" onclick="selectGame('game/join', <?= $game['id'] ?>)" class="button">Gra #<?= $game['id'] ?> (<?= $game['creator'] ?>)</a>
+            <a href="#" onclick="selectGame('game/join', <?= $game['id'] ?>)" class="button">Gra #<?= $game['id'] ?>: <?= $game['creator'] ?></a>
         </div>
     <?php endforeach ?>
 </form>

@@ -18,8 +18,10 @@ class Create extends \App\Controllers\AbstractController
             'questions' => $questions,
         ];
 
+        $player = app(\App\Models\Player::class)->getCurrentPlayer();
+
         $game = (object) [
-            'creator' => $this->getRequest()->getParam('name'),
+            'creator' => $player->name,
             'status' => \App\Models\Game::STATUS_RESULT,
             'config' => json_encode($config),
         ];
