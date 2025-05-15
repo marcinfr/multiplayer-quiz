@@ -35,7 +35,7 @@ class Game extends DataObject
             $connection = $db->getConnection();
 
             $sql = 'select * from player where game_id = ' . $game->id;
-            $sql .= ' order by total_points ASC';
+            $sql .= ' order by total_points DESC';
             $result = $connection->query($sql);
             while ($player = $result->fetch_object()) {
                 if ($player->view_type !== \App\Models\Player::VIEW_TYPE_HOST) {

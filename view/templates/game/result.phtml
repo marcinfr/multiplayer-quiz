@@ -25,7 +25,12 @@ $player = $this->getData('player');
                         <span class="ready">(Gotowy)</span>
                     <?php endif ?>
                 </div>
-                <div class="points"><?= $player->total_points ?></div>
+                <div class="accuracy">
+                    <?php if ($player->answered_questions_qty): ?>
+                        <?= $player->correct_answered_questions_qty / $player->answered_questions_qty * 100 ?>%
+                    <?php endif ?>
+                </div>
+                <div class="points"><?= $player->total_points ?> pkt.</div>
             </div>
         <?php endforeach ?>
     </div>
