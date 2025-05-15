@@ -77,16 +77,16 @@ class GameJson extends \App\Controllers\AbstractController
         }
 
         if ($this->getCurrentPlayer()->view_type == Player::VIEW_TYPE_HOST) {
-            $showAnserws = false;
+            $showAnswers = false;
         } else {
-            $showAnserws = true;
+            $showAnswers = true;
         }
         
         $questionBlock =  new \App\Block\Template('game/question.phtml', [
             'game' => $this->getGame(),
             'question' => $question,
             'show_question' => $showQuestion,
-            'show_answers' => $showAnserws,
+            'show_answers' => $showAnswers,
         ]);
 
         $this->data['section-question'] = $questionBlock->getHtml();

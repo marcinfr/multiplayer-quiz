@@ -12,6 +12,16 @@
                 onclick="providerSelected(this)">
             <label for="provider-<?= $providerId ?>"><?= $provider->label ?></label>
             <div id="provider-<?= $providerId ?>-options" class="question-provider-options" style="display:none">
+                <div class="question-set-priority">
+                    <div class="button" onclick="updatePriority('<?= $providerId ?>', -10)">-10</div>
+                    <div class="button" onclick="updatePriority('<?= $providerId ?>', -1)">-</div>
+                    <div class="value">
+                        Priorytet:
+                        <input type="text" id="priority-<?= $providerId ?>" name="questions[<?= $providerId ?>][priority]" value="<?= $provider->defaultPriority ?>" readonly>
+                    </div>
+                    <div class="button" onclick="updatePriority('<?= $providerId ?>', 1)">+</div>
+                    <div class="button" onclick="updatePriority('<?= $providerId ?>', 10)">+10</div>
+                </div>
                 <?php if ($optionsBlock = $provider->getOptionsBlock(['provider_id' => $providerId])): ?>
                     <?= $optionsBlock->getHtml() ?>
                 <?php endif ?>
@@ -27,5 +37,16 @@ function providerSelected(elem) {
     } else {
         $("#" + optionsContenerId).hide();
     }
+}
+function updatePriority(providerId, value) {
+    let elem = $("#priority-" + providerId);
+    let newPriority = parseInt(elem.val()) + parseInt(value);
+    if (newPriority < 1) {
+        newPriority = 1;
+    }
+    if (newPriority > 100) {
+        newPriority = 100;
+    }
+    elem.val(newPriority);
 }
 </script>

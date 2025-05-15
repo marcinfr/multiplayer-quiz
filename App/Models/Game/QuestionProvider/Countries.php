@@ -5,6 +5,7 @@ namespace App\Models\Game\QuestionProvider;
 class Countries
 {
     public $label = "Państwa Świata";
+    public $defaultPriority = 10;
 
     public function getOptionsBlock()
     {

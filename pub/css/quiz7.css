@@ -235,7 +235,7 @@
   cursor: pointer;
 }
 
-#quiz-checkboxes input {
+#quiz-checkboxes input[type="checkbox"] {
   display: none;
 }
 
@@ -244,7 +244,7 @@
 }
 
 #quiz-checkboxes .question-provider-options {
-  margin: 0 20px;
+  margin: 0 50px;
 }
 
 #edit-form {
@@ -340,11 +340,43 @@
   display: block;
   position: absolute;
   margin: 20px;
-  color: gray;
+  color: grey;
 }
 
 #game-menu a.hamburger-icon a:hover {
   color: black;
+}
+
+.question-set-priority {
+  margin-top: 6px;
+  display: flex;
+  width: 100%;
+  gap: 1px;
+}
+
+.question-set-priority .button {
+  flex: 1;
+  padding: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  background-color: cornflowerblue;
+  color: white;
+}
+
+.question-set-priority .value {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 4px;
+  text-align: center;
+  background-color: white;
+  color: black;
+}
+
+.question-set-priority input {
+  padding: 0;
+  text-align: center;
+  border: none;
 }
 
 @media screen and (max-width: 600px) {

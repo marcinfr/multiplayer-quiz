@@ -5,6 +5,7 @@ namespace App\Models\Game\QuestionProvider;
 class MathTasks
 {
     public $label = "Zadania matematyczne";
+    public $defaultPriority = 10;
 
     public function getOptionsBlock()
     {

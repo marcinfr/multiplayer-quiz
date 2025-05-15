@@ -69,8 +69,18 @@ class Game extends DataObject
     public function randomQuestion($game)
     {
         $questions = (array) $game->config->questions;
+        $sumOfPriorities = 0;
+        foreach ($questions as $providerId => $config) {
+            $sumOfPriorities += $config->priority ?? 0;
+            $config->priority = $sumOfPriorities;
+        }
+        $random = rand(1, $sumOfPriorities);
+        foreach ($questions as $providerId => $config) {
+            if ($random <= $config->priority) {
+                break;
+            }
+        }
         $questionProviders = $this->getQuestionProviders();
-        $providerId = array_rand($questions);
         $questionProvider = $questionProviders[$providerId];
         $game->current_question = $questionProvider->getQuestion((array) $questions[$providerId]);
         $this->update($game, ['current_question']);

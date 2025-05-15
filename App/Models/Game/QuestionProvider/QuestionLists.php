@@ -10,6 +10,7 @@ use App\Models\Quiz;
 class QuestionLists
 {
     public $label = "Listy Pytań";
+    public $defaultPriority = 100;
 
     public function getOptionsBlock(array $params = [])
     {
