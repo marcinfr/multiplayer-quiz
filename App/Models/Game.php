@@ -62,6 +62,7 @@ class Game extends DataObject
         return [
             'question_list' =>  app(\App\Models\Game\QuestionProvider\QuestionLists::class),
             'math_tasks' => app(\App\Models\Game\QuestionProvider\MathTasks::class),
+            'countries' => app(\App\Models\Game\QuestionProvider\Countries::class),
         ];
     }
 

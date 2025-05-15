@@ -80,11 +80,16 @@ class Quiz
 			}
 
 			$questions[$id] = $data;
-			$quizFile = self::quizDir . '/' . $quizId . '.json';
-			$questions = json_encode($questions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-			if (!file_put_contents($quizFile, $questions)) {
-    			die("Nie udało się zapisać");
-			}
+			$this->saveQuestions($quizId, $questions);
+		}
+	}
+
+	public function saveQuestions($quizId, $questions)
+	{
+		$quizFile = self::quizDir . '/' . $quizId . '.json';
+		$questions = json_encode($questions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		if (!file_put_contents($quizFile, $questions)) {
+			die("Nie udało się zapisać");
 		}
 	}
 
@@ -96,11 +101,21 @@ class Quiz
         }
     }
 
-	public function saveImage($url)
+	public function saveImage($url, $fileName = null)
 	{
 		if ($url) {
-			$savePath = md5($url) . time() . '.jpg';
-			$img = file_get_contents($url);
+			if (!$fileName) {
+				$fileName = md5($url) . time() . '.jpg';
+			}
+
+			$options = [
+    			'http' => [
+        			'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36\r\n"
+    			]
+			];
+			$context = stream_context_create($options);
+			$img = file_get_contents($url, false, $context);
+
 			if (!$img) {
 				throw new \Exception("Nie udało się pobrać " . $url);
 			}
@@ -109,8 +124,8 @@ class Quiz
         		throw new \Exception("Nie udało się utworzyć obrazu.");
     		}
 
-			$maxWidth = 250;
-			$maxHeight = 250;
+			$maxWidth = 300;
+			$maxHeight = 300;
 
 			$origWidth = \imagesx($sourceImage);
     		$origHeight = \imagesy($sourceImage);
@@ -129,13 +144,13 @@ class Quiz
 
 			$resizedImage = imagecreatetruecolor($newWidth, $newHeight);
     		\imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
-    		\imagejpeg($resizedImage, $this->getImagesDirPath() . $savePath, 90);
+    		\imagejpeg($resizedImage, $this->getImagesDirPath() . $fileName, 90);
    	 		\imagedestroy($sourceImage);
     		\imagedestroy($resizedImage);
 
 			return [
 				'url' => $url,
-				'path' => $savePath,
+				'path' => $fileName,
 			];
 		}
 	}
