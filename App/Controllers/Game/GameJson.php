@@ -90,8 +90,6 @@ class GameJson extends \App\Controllers\AbstractController
         ]);
 
         $this->data['section-question'] = $questionBlock->getHtml();
-
-        return;
     }
 
     private function setResult()
@@ -157,6 +155,10 @@ class GameJson extends \App\Controllers\AbstractController
     {
         /** init host player, only host player can generate questions */
         app(Game::class)->getHostPlayer($this->getGame());
+        $player = $this->getCurrentPlayer();
+        $player->last_activity_timestamp = time();
+        app(Player::class)->update($player, ['last_activity_timestamp']);
+
         $this->updateGameStatus();
         $this->setQuestion();
         $this->setResult();

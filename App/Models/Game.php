@@ -11,13 +11,57 @@ class Game extends DataObject
     protected string $table = 'game';
     private $games = [];
 
+    private $activeGames;
+
+    public function getActiveGames()
+    {
+        if ($this->activeGames == null) {
+            $db = app(\App\Db::class);
+            $connection = $db->getConnection();
+            $time = time() - 30;
+
+            $stmt = $connection->prepare("SELECT game_id FROM player WHERE last_activity_timestamp > ?");
+            $stmt->bind_param("s", $time); // "s" oznacza string; użyj "i" jeśli $time to liczba (np. timestamp)
+            $stmt->execute();
+            $activeGameIds = [];
+            while ($row = $stmt->get_result()->fetch_assoc()) {
+                $activeGameIds[] = $row['game_id'];
+            }
+            if ($activeGameIds) {
+                $sql = 'select * from game where id in (' . implode(',', $activeGameIds) .')';
+                $this->activeGames = $connection->query($sql);
+            }
+            if (!$this->activeGames) {
+                $this->activeGames = [];
+            }
+            $this->removeInactiveGames($activeGameIds);
+        }
+        return $this->activeGames;
+    }
+
+    protected function removeInactiveGames($activeGameIds)
+    {
+        $db = app(\App\Db::class);
+        $connection = $db->getConnection();
+        if ($activeGameIds) {
+            $where = ' where game_id not in (' . implode(',', $activeGameIds) .')';
+        } else {
+            $where = '';
+        }
+
+        $sql = 'delete from player' . $where;
+        $connection->query($sql);
+        $sql = 'delete from game' . $where;
+        $connection->query($sql);
+    }
+
     public function getByPlayer($player)
     {
         if (!$player->id) {
             return false;
         }
         if (!isset($this->games[$player->id])) {
-            $db = app(\App\DB::class);
+            $db = app(\App\Db::class);
             $connection = $db->getConnection();
             $sql = 'select * from game where id = ' . $player->game_id;
             $game = $connection->query($sql)->fetch_object();
