@@ -186,6 +186,21 @@
   background-image: linear-gradient(to right , green, rgb(0, 186, 0), green);
 }
 
+.result-message {
+  min-height: 15vh;
+  margin: 10px;
+  display: flex;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: clamp(10px, 5vw, 20px);
+  overflow-wrap: break-word;
+  font-size: clamp(10px, 5vw, 20px);
+  border-top: lightgrey solid 1px;
+  border-bottom: lightgrey solid 1px;
+}
+
 .player-row {
   background: lightgray;
   align-items: center;

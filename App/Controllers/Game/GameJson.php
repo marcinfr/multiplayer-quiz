@@ -102,6 +102,7 @@ class GameJson extends \App\Controllers\AbstractController
                 'game' => $this->getGame(),
                 'player' => $this->getCurrentPlayer(),
                 'players' => $this->getPlayers(),
+                'message' => 'Gotowy na następne pytanie?',
             ]);
             $this->data['section-result'] = $resultBlock->getHtml();
         }

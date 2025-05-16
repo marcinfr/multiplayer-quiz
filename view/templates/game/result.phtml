@@ -2,6 +2,9 @@
 $game = $this->getData('game');
 $player = $this->getData('player');
 ?>
+<div class="result-message">
+    <?= $this->getData('message') ?>
+</div>
 <?php if ($player->view_type !== \App\Models\Player::VIEW_TYPE_HOST): ?>
     <a href="#" onclick="action('setPlayerReady')" id="button-ready" class="<?= !$player->has_answer ? 'ready' : ''?>">Gotowy</a>
 <?php endif ?>
