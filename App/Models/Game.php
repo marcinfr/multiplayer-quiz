@@ -23,8 +23,9 @@ class Game extends DataObject
             $stmt = $connection->prepare("SELECT game_id FROM player WHERE last_activity_timestamp > ?");
             $stmt->bind_param("s", $time); // "s" oznacza string; użyj "i" jeśli $time to liczba (np. timestamp)
             $stmt->execute();
+            $result = $stmt->get_result();
             $activeGameIds = [];
-            while ($row = $stmt->get_result()->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) {
                 $activeGameIds[] = $row['game_id'];
             }
             if ($activeGameIds) {
