@@ -48,19 +48,20 @@ class Game extends DataObject
         $db = app(\App\Db::class);
         $connection = $db->getConnection();
         if ($activeGameIds) {
-            $where = ' where game_id not in (' . implode(',', $activeGameIds) .')';
-        } else {
-            $where = '';
-        }
-        $sql = 'delete from player' . $where;
-        $connection->query($sql);
-        if ($activeGameIds) {
-            $where = ' where id not in (' . implode(',', $activeGameIds) .') and ';
+            $where = ' where game_id not in (' . implode(',', $activeGameIds) .') and ';
         } else {
             $where = ' where ';
         }
         $time = time() - 60 * 60 * 2; // keep player session for 2h
         $where .= ' last_activity_timestamp > ' . $time;
+        $sql = 'delete from player' . $where;
+        
+        $connection->query($sql);
+        if ($activeGameIds) {
+            $where = ' where id not in (' . implode(',', $activeGameIds) .')';
+        } else {
+            $where = '';
+        }
         $sql = 'delete from game' . $where;
         $connection->query($sql);
     }
