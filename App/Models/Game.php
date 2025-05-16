@@ -40,6 +40,9 @@ class Game extends DataObject
         return $this->activeGames;
     }
 
+    /**
+     * @TODO napisac to ladniej
+     */
     protected function removeInactiveGames($activeGameIds)
     {
         $db = app(\App\Db::class);
@@ -49,9 +52,13 @@ class Game extends DataObject
         } else {
             $where = '';
         }
-
         $sql = 'delete from player' . $where;
         $connection->query($sql);
+        if ($activeGameIds) {
+            $where = ' where id not in (' . implode(',', $activeGameIds) .')';
+        } else {
+            $where = '';
+        }
         $sql = 'delete from game' . $where;
         $connection->query($sql);
     }
