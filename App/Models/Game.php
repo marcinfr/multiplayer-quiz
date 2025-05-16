@@ -65,18 +65,23 @@ class Game extends DataObject
 
     public function getByPlayer($player)
     {
-        if (!$player->id) {
+        if (!$player->game_id) {
             return false;
         }
-        if (!isset($this->games[$player->id])) {
+        return $this->getGame($player->game_id);
+    }
+
+    public function getGame($gameId)
+    {
+        if (!isset($this->games[$gameId])) {
             $db = app(\App\Db::class);
             $connection = $db->getConnection();
-            $sql = 'select * from game where id = ' . $player->game_id;
+            $sql = 'select * from game where id = ' . $gameId;
             $game = $connection->query($sql)->fetch_object();
             $game->config = json_decode($game->config);
-            $this->games[$player->id] = $game;
+            $this->games[$gameId] = $game;
         }
-        return $this->games[$player->id];
+        return $this->games[$gameId];
     }
 
     public function getHostPlayer($game)
