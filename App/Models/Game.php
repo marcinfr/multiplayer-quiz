@@ -20,7 +20,7 @@ class Game extends DataObject
             $connection = $db->getConnection();
             $time = time() - 30;
 
-            $stmt = $connection->prepare("SELECT game_id FROM player WHERE last_activity_timestamp > ?");
+            $stmt = $connection->prepare("SELECT game_id FROM player WHERE last_activity_timestamp > ? and game_id is not NULL");
             $stmt->bind_param("s", $time); // "s" oznacza string; użyj "i" jeśli $time to liczba (np. timestamp)
             $stmt->execute();
             $result = $stmt->get_result();
@@ -29,7 +29,7 @@ class Game extends DataObject
                 $activeGameIds[] = $row['game_id'];
             }
             if ($activeGameIds) {
-                $sql = 'select * from game where id in (' . implode(',', $activeGameIds) .')';
+                $sql = 'select * from game where id in (' . implode(',', $activeGameIds) . ')';
                 $this->activeGames = $connection->query($sql);
             }
             if (!$this->activeGames) {
