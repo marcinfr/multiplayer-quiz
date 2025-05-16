@@ -21,11 +21,12 @@ class Join extends \App\Controllers\AbstractController
 
         $player->game_id = $this->getRequest()->getParam('game_id');
         $player->is_host = 0;
-        if (!$game->round) {
-            $player->has_answer = 1;
+        if ($game->status == Game::STATUS_QUESTION) {
+            $player->has_answer = 0;
         } else {
-            $player->total_points = 0;
+            $player->has_answer = 1;
         }
+        $player->total_points = 0;
         $player->last_selected_answer = null;
         $player->answered_questions_qty = 0;
         $player->correct_answered_questions_qty = 0;
