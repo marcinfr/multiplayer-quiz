@@ -19,7 +19,7 @@ var update = function() {
                 const answer_id = $(this).data('index');
                 $.ajax({
                     type : 'GET',
-                    url : 'selectAnswer?id=' + answer_id,
+                    url : 'game/selectAnswer?id=' + answer_id,
                 });
             });
        },

@@ -29,6 +29,8 @@ class CreateTables
                 'is_host smallint unsigned default 0',
                 'last_selected_answer smallint unsigned default null',
                 'has_answer smallint unsigned default 0',
+                'answered_questions_qty int unsigned default 0',
+                'correct_answered_questions_qty int unsigned default 0',
                 'total_points smallint unsigned default 0',
                 'last_activity_timestamp int unsigned',
                 'view_type varchar(255)',

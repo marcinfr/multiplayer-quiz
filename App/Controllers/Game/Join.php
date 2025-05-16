@@ -18,6 +18,8 @@ class Join extends \App\Controllers\AbstractController
         $player->is_host = 0;
         $player->has_answer = 1;
         $player->total_points = 0;
+        $player->answered_questions_qty = 0;
+        $player->correct_answered_questions_qty = 0;
         app(\App\Models\Player::class)->save($player);
 
         return app(\App\Response\Redirect::class)->setUrl('../game');

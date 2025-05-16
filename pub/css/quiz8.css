@@ -195,7 +195,7 @@
   border: none;
   border-radius: 4px;
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 4fr 1fr 1fr;
   grid-template-rows: 1fr;
 }
 
@@ -211,6 +211,11 @@
 
 .player-row .points {
   text-align: right;
+}
+
+.player-row .accuracy {
+  text-align: right;
+  padding: 0 5px;
 }
 
 .player-row .pending {
