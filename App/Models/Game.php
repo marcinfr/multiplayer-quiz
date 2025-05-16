@@ -21,7 +21,7 @@ class Game extends DataObject
             $time = time() - 30;
 
             $stmt = $connection->prepare("SELECT game_id FROM player WHERE last_activity_timestamp > ? and game_id is not NULL");
-            $stmt->bind_param("s", $time); // "s" oznacza string; użyj "i" jeśli $time to liczba (np. timestamp)
+            $stmt->bind_param("i", $time);
             $stmt->execute();
             $result = $stmt->get_result();
             $activeGameIds = [];
@@ -57,8 +57,10 @@ class Game extends DataObject
         if ($activeGameIds) {
             $where = ' where id not in (' . implode(',', $activeGameIds) .')';
         } else {
-            $where = '';
+            $where = ' and ';
         }
+        $time = time() - 60 * 60 * 2; // keep player session for 2h
+        $where .= ' last_activity_timestamp > ' . $time;
         $sql = 'delete from game' . $where;
         $connection->query($sql);
     }
