@@ -49,8 +49,8 @@ class GameJson extends \App\Controllers\AbstractController
             return;
         }
 
-        $question = app(Game::class)->getQuestion($this->getGame());
         $player = $this->getCurrentPlayer();
+        $question = app(Game::class)->getQuestion($this->getGame(), $player->is_host);
 
         foreach ($question['answers'] as $id => $answer) {
             if ($player->has_answer && $player->last_selected_answer == $id) {
@@ -111,7 +111,7 @@ class GameJson extends \App\Controllers\AbstractController
     private function isRoundEnded()
     {
         $hasPlayers = false;
-        foreach ($this->getPLayers() as $player) {
+        foreach ($this->getPlayers() as $player) {
             if (!$player->has_answer) {
                 return false;
             }
@@ -155,6 +155,8 @@ class GameJson extends \App\Controllers\AbstractController
 
     public function execute()
     {
+        /** init host player, only host player can generate questions */
+        app(Game::class)->getHostPlayer($this->getGame());
         $this->updateGameStatus();
         $this->setQuestion();
         $this->setResult();

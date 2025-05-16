@@ -27,10 +27,37 @@ class Game extends DataObject
         return $this->games[$player->id];
     }
 
+    public function getHostPlayer($game)
+    {
+        $players = $this->getPlayers($game);
+        $hostPlayer = $game->host_player ?? false;
+        if (!$hostPlayer) {
+            $hostPlayer = reset($players);
+            if ($hostPlayer) {
+                $hostPlayer->is_host = true;
+                app(Player::class)->update($hostPlayer, ['is_host']);
+                $game->host_player = $hostPlayer;
+            }
+        }
+    }
+
+    /**
+     * get players with host types
+     */
+    public function getAllPlayers($game)
+    {
+        $this->getPlayers($game);
+        return $game->all_players;
+    }
+
+    /**
+     * get players without hosts
+     */
     public function getPlayers($game)
     {
         if (!isset($game->players)) {
             $game->players = [];
+            $game->all_players = [];
             $db = app(\App\DB::class);
             $connection = $db->getConnection();
 
@@ -38,6 +65,10 @@ class Game extends DataObject
             $sql .= ' order by total_points DESC';
             $result = $connection->query($sql);
             while ($player = $result->fetch_object()) {
+                if ($player->is_host) {
+                    $game->host_player = $player;
+                }
+                $game->all_players[] = $player;
                 if ($player->view_type !== \App\Models\Player::VIEW_TYPE_HOST) {
                     $game->players[] = $player;
                 }
@@ -46,9 +77,9 @@ class Game extends DataObject
         return $game->players;
     }
 
-    public function getQuestion($game)
+    public function getQuestion($game, $canCreateQuestion = false)
     {
-        if (!isset($game->current_question)) {
+        if (!isset($game->current_question) && $canCreateQuestion) {
             $this->randomQuestion($game);
         }
         if (!isset($game->question)) {
