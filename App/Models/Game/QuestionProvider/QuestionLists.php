@@ -20,7 +20,7 @@ class QuestionLists
     public function getQuestion($options)
     {
         $aiPercent = $options['ai'] ?? 0;
-        if (random_int(1, 100) > $aiPercent) {
+        if (random_int(1, 100) < $aiPercent) {
             return $this->getAiQuestion($options);
         } else {
             return $this->getDefinedQuestion($options);
