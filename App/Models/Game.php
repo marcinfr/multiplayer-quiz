@@ -55,7 +55,7 @@ class Game extends DataObject
         $time = time() - 60 * 60 * 2; // keep player session for 2h
         $where .= ' last_activity_timestamp > ' . $time;
         $sql = 'delete from player' . $where;
-        
+
         $connection->query($sql);
         if ($activeGameIds) {
             $where = ' where id not in (' . implode(',', $activeGameIds) .')';

@@ -31,54 +31,33 @@ class DownloadCountriesData
                     'capitol' => trim($cols[4]->textContent),
                 ];
 
-                echo 'Reading about ' . $data['country'] . ' on wikipaedia' . "\n";
+                echo 'Reading about ' . $data['country'] . ' on wikipedia' . "\n";
 
-                $link = $cols[1]->getElementsByTagName('a')->item(0);
-                if ($link) {
-                    $href = $link->getAttribute('href');
-                    $fullUrl = 'https://pl.wikipedia.org' . $href;
-                    $details = $this->getCountryDetails($fullUrl);
-                    if ($details['flag_url']) {
-                        echo 'Download flag: ' . $details['flag_url'] ."\n";
-                        $image = app(\App\Models\Quiz::class)->saveImage($details['flag_url'], 'countries/flag_' . $i . '.jpg');
-                        $details['flag'] = $image['path'];
-                    }
-                    unset($details['flag_url']);
+                $img = $cols[1]->getElementsByTagName('img')->item(0);
+                $flagUrl = $img->getAttribute('src');
+                if (strpos($flagUrl, '//') === 0) {
+                    $flagUrl = 'https:' . $flagUrl;
                 }
+                $flagUrl = str_replace('/40px-', '/300px-', $flagUrl);
+                echo 'Download flag: ' . $flagUrl ."\n";
 
-                $data = array_merge($data, $details);
+                $image = app(\App\Models\Quiz::class)->saveImage($flagUrl, 'countries/flag_' . $i . '.jpg');
+                $data['flag'] = $image['path'];
+
+                $img = $cols[2]->getElementsByTagName('img')->item(0);
+                $mapUrl = $img->getAttribute('src');
+                if (strpos($mapUrl, '//') === 0) {
+                    $mapUrl = 'https:' . $mapUrl;
+                }
+                $mapUrl = str_replace('/60px-', '/300px-', $mapUrl);
+                echo 'Download map: ' . $mapUrl ."\n";
+
+                $image = app(\App\Models\Quiz::class)->saveImage($mapUrl, 'countries/map_' . $i . '.jpg');
+                $data['map'] = $image['path'];
+
                 $countryData[] = $data;
             }
         }
         app(\App\Models\Quiz::class)->saveQuestions("countries", $countryData);
-    }
-
-    protected function getCountryDetails($url)
-    {
-        $details = [
-            'flag_url' => '',
-        ];
-        $html = file_get_contents($url);
-        libxml_use_internal_errors(true);
-        $doc = new DOMDocument();
-        $doc->loadHTML($html);
-        $xpath = new DOMXPath($doc);
-
-        $img = $xpath->query('//img[@alt="Flaga"]')->item(0);
-
-        $flagUrl = null;
-        if ($img) {
-            $src = $img->getAttribute('src');
-
-            $src = str_replace('/120px-', '/300px-', $src);
-
-            if (strpos($src, '//') === 0) {
-                $src = 'https:' . $src;
-            }
-
-           $details['flag_url'] = $src;
-        }
-
-        return $details;
     }
 }

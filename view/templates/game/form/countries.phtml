@@ -1,0 +1,8 @@
+<?php
+$providerId = $this->getData('provider_id');
+$options = $this->getData('options');
+?>
+<?php foreach ($options as $code => $label): ?>
+    <input type="checkbox" id="countries-options-<?= $code ?>" name="questions[<?= $providerId ?>][options][]" value="<?= $code ?>">
+    <label for="countries-options-<?= $code ?>"><?= $label ?></label>
+<?php endforeach ?>
