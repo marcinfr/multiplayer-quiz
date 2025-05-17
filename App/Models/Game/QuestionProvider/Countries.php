@@ -28,29 +28,56 @@ class Countries
         $data = file_get_contents(\App\Models\Quiz::quizDir . '/countries.json');
         $data = json_decode($data, true);
         shuffle($data);
-        $countries = array_rand($data, 4);
+        $countriesIds = array_rand($data, 4);
+        $countries = [];
+        foreach ($countriesIds as $id) {
+            $countries[] = $data[$id];
+        }
 
-        $correctCountryId = array_shift($countries);
-        $correctCountry = $data[$correctCountryId];
+        $correctCountry = array_shift($countries);
 
+        $type = array_rand($types);
+        switch ($types[$type]) {
+            case 'capitol':
+                $question = [
+                    'question' => 'Stolica kraju' . $correctCountry['country'] . ' to?',
+                    'answers' => $this->getAnswers($countries, $correctCountry, 'capitol'),
+                ];
+                break;
+            case 'map':
+                $question = [
+                    'question' => 'Które to państwo?',
+                    'question_image' => $correctCountry['map'],
+                    'answers' => $this->getAnswers($countries, $correctCountry),
+                ];
+                break;
+            case 'flag':
+                $question = [
+                    'question' => 'Którego państwa jest ta flaga?',
+                    'question_image' => $correctCountry['flag'],
+                    'answers' => $this->getAnswers($countries, $correctCountry),
+                ];
+                break;
+        }
+
+        return json_encode($question);
+    }
+
+    protected function getAnswers($countries, $correctCountry, $field = 'country')
+    {
         $answers = [];
         $answers[] = [
-            'answer' => $correctCountry['country'],
+            'answer' => $correctCountry[$field],
             'correct' => true,
         ];
         foreach($countries as $country) {
             $answers[] = [
-                'answer' => $data[$country]['country'],
+                'answer' => $country[$field],
             ];
         }
 
         shuffle($answers);
-
-        $question = $this->getCountryQuestion($correctCountry, $types);
-
-        $question['answers'] = $answers;
-
-        return json_encode($question);
+        return $answers;
     }
 
     protected function getCountryQuestion($correctCountry, $types)
