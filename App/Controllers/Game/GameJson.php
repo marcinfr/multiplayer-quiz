@@ -50,7 +50,7 @@ class GameJson extends \App\Controllers\AbstractController
         }
 
         $player = $this->getCurrentPlayer();
-        $question = app(Game::class)->getQuestion($this->getGame(), $player->is_host);
+        $question = app(Game::class)->getQuestion($this->getGame());
 
         foreach ($question['answers'] as $id => $answer) {
             if ($player->has_answer && $player->last_selected_answer == $id) {
@@ -144,8 +144,9 @@ class GameJson extends \App\Controllers\AbstractController
                 }
                 break;
             case Game::STATUS_RESULT:
-                if ($this->allPlayersReady()) {
+                if ($this->allPlayersReady() && $this->getCurrentPlayer()->is_host) {
                     app(Game::class)->nextRound($this->getGame());
+                    app(Game::class)->getQuestion($this->getGame(), true);
                 }
                 break;
         }
