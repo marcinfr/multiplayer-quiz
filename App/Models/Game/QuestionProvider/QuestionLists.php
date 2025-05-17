@@ -66,13 +66,13 @@ class QuestionLists
     {
         $openAI = app(\App\Models\OpenAi::class);
         $exampleQuestions = [];
-        for ($i =0; $i < 5; $i ++) {
+        for ($i =0; $i < 3; $i ++) {
             $exampleQuestions[] = $this->getDefinedQuestion($options);
         }
 
         $question = $exampleQuestions[0];
 
-        $userPrompt = "Stwórz jedno pytanie do quizu podaj je w formacie json, tutaj przykładowe pytania, na ich podstawie stworz inne. napisz samego jsona, nic więcej: "
+        $userPrompt = "Stwórz jedno pytanie do quizu podaj je w formacie json, tutaj przykładowe pytania, na ich podstawie stworz zupełnie inne, aby sie nie powtarzalo z moimi ale bylo o podobny poziomi trudnosci. napisz samego jsona, nic więcej: "
             . implode(',', $exampleQuestions);
 
         $result = $openAI->prompt(
