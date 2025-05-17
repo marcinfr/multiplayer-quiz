@@ -2,7 +2,7 @@
 
 class DownloadCountriesData
 {
-    public $command = 'download-coutries-data';
+    public $command = 'download-countries-data';
 
     public function execute()
     {

@@ -32,5 +32,5 @@ if (!$commandCode) {
     $class = $commands[$commandCode];
     $class->execute();
 } else {
-    throw new \Exception('Incorrect ' . $commandCode . ' command coe');
+    throw new \Exception('Incorrect ' . $commandCode . ' command code!');
 }
