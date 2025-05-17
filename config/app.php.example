@@ -2,6 +2,7 @@
 
 return [
     'ROOT_DIR' => '',
+    'OPENAI_KEY' => '',
     'DB' => [
         'HOST' => 'localhost',
         'USER' => 'root',

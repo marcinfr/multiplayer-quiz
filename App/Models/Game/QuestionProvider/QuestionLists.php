@@ -19,6 +19,16 @@ class QuestionLists
 
     public function getQuestion($options)
     {
+        $aiPercent = $options['ai'] ?? 0;
+        if (random_int(1, 100) > $aiPercent) {
+            return $this->getAiQuestion($options);
+        } else {
+            return $this->getDefinedQuestion($options);
+        }
+    }
+
+    protected function getDefinedQuestion($options)
+    {
         $quizIds = $options['options'] ?? [];
         $questions = [];
         foreach ($quizIds as $quizId) {
@@ -50,5 +60,43 @@ class QuestionLists
             'question_image' => $questionImage ?? null,
             'answers' => $answers,
         ]);
+    }
+
+    protected function getAiQuestion($options)
+    {
+        $openAI = app(\App\Models\OpenAi::class);
+        $exampleQuestions = [];
+        for ($i =0; $i < 3; $i ++) {
+            $exampleQuestions[] = $this->getDefinedQuestion($options);
+        }
+
+        $question = $exampleQuestions[0];
+
+        $userPrompt = "Stwórz jedno pytanie do quizu podaj je w formacie json, tutaj przykładowe pytania, na ich podstawie stworz inne: "
+            . implode(',', $exampleQuestions);
+
+        $result = $openAI->prompt(
+            [
+                "model" => 'gpt-4o-mini',
+                "messages" => [
+                    ["role" => "user", "content" => $userPrompt]
+                ],
+            ]
+        );
+
+        if ($result) {
+            $pattern = '/```json(.*?)```/s';
+            if (preg_match($pattern, $result, $matches)) {
+                $json = trim($matches[1]);
+            }
+
+            $question = json_decode($json, true);
+            $question['question'] = '[AI] ' . $question['question'];
+            $answers = $question['answers'];
+            shuffle($answers);
+            $question['answers'] = $answers;
+        }
+
+        return json_encode($question);
     }
 }
