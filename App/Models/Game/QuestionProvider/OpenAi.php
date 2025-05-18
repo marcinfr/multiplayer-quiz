@@ -5,53 +5,84 @@
  */
 namespace App\Models\Game\QuestionProvider;
 
-class OpenAi
+class OpenAi extends QuestionLists
 {
-    public $label = "AI";
-
+    public $label = "Ai";
     public $defaultPriority = 20;
-
-    public function getOptionsBlock(array $params = [])
-    {
-        return false;
-    }
 
     public function getQuestion($options)
     {
         $openAI = app(\App\Models\OpenAi::class);
-        $questions = (array) $this->game->config->questions;
-
-        $providerId = 'question_list';
-        $questionProviders = app(\App\Models\Game::class)->getQuestionProviders();
-        $questionProvider = $questionProviders[$providerId];
         $exampleQuestions = [];
         for ($i =0; $i < 3; $i ++) {
-            $exampleQuestions[] = $questionProvider->getQuestion((array) $questions[$providerId]);
+            $exampleQuestions[] = parent::getQuestion($options);
         }
 
-        $userPrompt = "Stwórz jedno pytanie do quizu podaj je w formacie json, tutaj przykładowe pytania, na ich podstawie stworz inne: "
+        $question = $exampleQuestions[0];
+
+        $userPrompt = "Stwórz jedno pytanie do quizu podaj je w formacie json, tutaj przykładowe pytania, 
+        na ich podstawie stworz zupełnie inne, 
+        aby sie nie powtarzalo z moimi ale bylo o podobnym poziomi trudnosci. 
+        Musi być tylko jedna poprawna odpowiedz. Odpowiedzi nie mogą się powtarzać.
+        napisz samego jsona, nic więcej: "
             . implode(',', $exampleQuestions);
 
         $result = $openAI->prompt(
             [
-                "model" => 'gpt-4o-mini',
+                "model" => 'gpt-4.1',
                 "messages" => [
                     ["role" => "user", "content" => $userPrompt]
                 ],
             ]
         );
 
-        $pattern = '/```json(.*?)```/s';
-        if (preg_match($pattern, $result, $matches)) {
-            $json = trim($matches[1]);
+        if ($result) {
+            try {
+                $aiQuestion = json_decode($result, true);
+                if ($this->validateQuestion($aiQuestion)) {
+                    $aiQuestion['question'] = '[AI] ' . $aiQuestion['question'];
+                    $answers = $aiQuestion['answers'];
+                    shuffle($answers);
+                    $aiQuestion['answers'] = $answers;
+                    return json_encode($aiQuestion);
+                }
+            } catch (\Exception $e) {
+                // do nothing
+            }
         }
 
-        $question = json_decode($json, true);
-        $question['question'] = 'AI: ' . $question['question'];
-        $answers = $question['answers'];
-        shuffle($answers);
-        $question['answers'] = $answers;
+        return $question;
+    }
 
-        return json_encode($question);
+    protected function validateQuestion($question)
+    {
+        if (!isset($question['question'])) {
+            return false;
+        }
+
+        if (!$question['question'] || !is_string($question['question'])) {
+            return false;
+        }
+
+        if (!isset($question['answers']) || !is_array($question['answers']) || count($question['answers']) != 4) {
+            return false;
+        }
+
+        $correctAnswers = 0;
+        foreach ($question['answers'] as $answer) {
+            $isCorrect = $answer['correct'] ?? false;
+            if ($isCorrect) {
+                $correctAnswers ++;
+            }
+            if (!isset($answer['answer']) || !$answer['answer'] || !is_string($answer['answer'])) {
+                return false;
+            }
+        }
+
+        if ($correctAnswers != 1) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -1,19 +1,8 @@
 <?php 
 $providerId = $this->getData('provider_id');
 ?>
-
-<div class="question-set-priority">
-    <div class="button" onclick="updatePriority('<?= $providerId ?>_ai', -10)">-10</div>
-    <div class="button" onclick="updatePriority('<?= $providerId ?>_ai', -1)">-</div>
-    <div class="value">
-        Procent AI:
-        <input type="text" id="priority-<?= $providerId ?>_ai" name="questions[<?= $providerId ?>][ai]" value="20" readonly>
-    </div>
-    <div class="button" onclick="updatePriority('<?= $providerId ?>_ai', 1)">+</div>
-    <div class="button" onclick="updatePriority('<?= $providerId ?>_ai', 10)">+10</div>
-</div>
-
 <?php foreach (app(\App\Models\Quiz::class)->getList() as $id => $option): ?>
-    <input type="checkbox" id="quiz-<?= $id ?>" name="questions[<?= $providerId ?>][options][]" value="<?= $id ?>">
-    <label for="quiz-<?= $id ?>"><?= $option ?></label>
+    <input type="checkbox" id="quiz-<?= $providerId ?>-<?= $id ?>" name="questions[<?= $providerId ?>][options][]" value="<?= $id ?>">
+    <label for="quiz-<?= $providerId ?>-<?= $id ?>"><?= $option ?></label>
 <?php endforeach ?>
+
