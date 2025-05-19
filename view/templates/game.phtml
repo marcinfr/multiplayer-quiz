@@ -7,7 +7,7 @@
               <label for="view_type-<?= $id ?>"><?= $viewType['label'] ?></label>
           <?php endforeach ?>
       </div>
-        <a href="game/exit" class="button danger">Opuść grę</a>
+      <a href="game/exit" class="button danger">Opuść grę</a>
   </div>
   <a href="#" class="hamburger-icon" onclick="toogleMenu()">
     <i class="fa fa-bars"></i>
@@ -41,5 +41,11 @@ function updateViewType(elem) {
             url: '<?= url('player/updateGameView?view_type=') ?>' + elem.value
         });
     }
+}
+function saveQuestion() {
+    $.ajax({
+        type: 'GET',
+        url: '<?= url('game/saveQuestion') ?>'
+    });
 }
 </script>

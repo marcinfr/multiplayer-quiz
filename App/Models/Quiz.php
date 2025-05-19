@@ -58,7 +58,7 @@ class Quiz
     }
 
 	public function saveQuestion(
-		int $quizId,
+		string $quizId,
 		int $id,
 		array $data
 	) {

@@ -29,11 +29,11 @@ $question = $this->getData('question');
     <div class="row">
         <label for="answer">Błędne Odpowiedzi</label>
         <div class="input">
-            <textarea id="wrong_answer_1" name="wrong_answer_1" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][0] ?? '' ?></textarea>
+            <textarea id="wrong_answer_1" name="wrong_answer[0]" required placeholder="Błędna Odpowiedź..." style="height:200px"><?= $question['wrong_answers'][0] ?? '' ?></textarea>
             <br/>
-            <textarea id="wrong_answer_2" name="wrong_answer_2" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][1] ?? '' ?></textarea>
+            <textarea id="wrong_answer_2" name="wrong_answer[1]" placeholder="Błędna Odpowiedź..." style="height:200px"><?= $question['wrong_answers'][1] ?? '' ?></textarea>
             <br/>
-            <textarea id="wrong_answer_2" name="wrong_answer_3" required placeholder="Błędna Odpowiedź.." style="height:200px"><?= $question['wrong_answers'][2] ?? '' ?></textarea>
+            <textarea id="wrong_answer_2" name="wrong_answer[2]" placeholder="Błędna Odpowiedź..." style="height:200px"><?= $question['wrong_answers'][2] ?? '' ?></textarea>
         </div>
     </div>
     <div class="row">
