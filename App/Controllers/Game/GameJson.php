@@ -53,9 +53,9 @@ class GameJson extends \App\Controllers\AbstractController
         $question = app(Game::class)->getQuestion($this->getGame());
 
         foreach ($question['answers'] as $id => $answer) {
+            $isCorrect = $answer['correct'] ?? false;
             if ($player->has_answer && $player->last_selected_answer == $id) {
                 if ($this->getGame()->status == Game::STATUS_ANSWER) {
-                    $isCorrect = $answer['correct'] ?? false;
                     if ($isCorrect) {
                         $class= 'correct';
                     } else {
@@ -67,6 +67,16 @@ class GameJson extends \App\Controllers\AbstractController
             } else {
                 $class = 'not-selected';
             }
+
+            if ($this->getGame()->status == Game::STATUS_ANSWER
+                && ($question['show-suggested'] ?? false)
+                && $player->has_answer
+                && $isCorrect
+                && $player->last_selected_answer != $id
+            ) {
+                $class .= ' suggested';
+            }
+
             $question['answers'][$id]['class'] = $class;
         }
 
@@ -95,7 +105,8 @@ class GameJson extends \App\Controllers\AbstractController
     private function setResult()
     {
         $this->data['section-result'] = '';
-        if ($this->getGame()->status == Game::STATUS_RESULT) {
+        if ($this->getGame()->status == Game::STATUS_RESULT
+            || $this->getGame()->status == Game::STATUS_WAITING_FOR_QUESTION) {
             $resultBlock = new \App\Block\Template('game/result.phtml', [
                 'game' => $this->getGame(),
                 'player' => $this->getCurrentPlayer(),
@@ -145,8 +156,10 @@ class GameJson extends \App\Controllers\AbstractController
                 break;
             case Game::STATUS_RESULT:
                 if ($this->allPlayersReady() && $this->getCurrentPlayer()->is_host) {
-                    app(Game::class)->nextRound($this->getGame());
-                    app(Game::class)->getQuestion($this->getGame(), true);
+                    app(Game::class)->updateStatus($this->getGame(), Game::STATUS_WAITING_FOR_QUESTION);
+                    //app(Game::class)->nextRound($this->getGame());
+                    $command = '/usr/bin/php ' . ROOT_PATH . '/bin/console generate-question ' . (int) $this->getGame()->id;
+                    exec($command . ' > /dev/null 2>&1 &');
                 }
                 break;
         }

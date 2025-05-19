@@ -30,7 +30,8 @@ if (!$commandCode) {
     }
 } elseif (isset($commands[$commandCode])) {
     $class = $commands[$commandCode];
-    $class->execute();
+    $arguments = array_slice($argv, 2);
+    $class->execute(...$arguments);
 } else {
     throw new \Exception('Incorrect ' . $commandCode . ' command code!');
 }

@@ -40,7 +40,8 @@ class OpenAi extends QuestionLists
             try {
                 $aiQuestion = json_decode($result, true);
                 if ($this->validateQuestion($aiQuestion)) {
-                    $aiQuestion['question'] = '[AI] ' . $aiQuestion['question'];
+                    $aiQuestion['question'] = '<span class="ai-question-label">[AI]</span> ' . $aiQuestion['question'];
+                    $aiQuestion['show-suggested'] = true;
                     $answers = $aiQuestion['answers'];
                     shuffle($answers);
                     $aiQuestion['answers'] = $answers;

@@ -8,6 +8,8 @@ class Game extends DataObject
     const STATUS_ANSWER = 'answer';
     const STATUS_RESULT = 'result';
 
+    const STATUS_WAITING_FOR_QUESTION = 'waiting_for_question';
+
     protected string $table = 'game';
     private $games = [];
 
@@ -81,10 +83,12 @@ class Game extends DataObject
             $connection = $db->getConnection();
             $sql = 'select * from game where id = ' . $gameId;
             $game = $connection->query($sql)->fetch_object();
-            $game->config = json_decode($game->config);
-            $this->games[$gameId] = $game;
+            if ($game) {
+                $game->config = json_decode($game->config);
+                $this->games[$gameId] = $game;
+            }
         }
-        return $this->games[$gameId];
+        return $this->games[$gameId] ?? false;
     }
 
     public function getHostPlayer($game)
@@ -137,11 +141,8 @@ class Game extends DataObject
         return $game->players;
     }
 
-    public function getQuestion($game, $canCreateQuestion = false)
+    public function getQuestion($game)
     {
-        if (!isset($game->current_question) && $canCreateQuestion) {
-            $this->randomQuestion($game);
-        }
         if (!isset($game->question)) {
             $game->question = json_decode($game->current_question, true);
         }
@@ -158,7 +159,7 @@ class Game extends DataObject
         ];
     }
 
-    public function randomQuestion($game)
+    public function getRandomQuestion($game)
     {
         $questions = (array) $game->config->questions;
         $sumOfPriorities = 0;
@@ -174,8 +175,7 @@ class Game extends DataObject
         }
         $questionProviders = $this->getQuestionProviders();
         $questionProvider = $questionProviders[$providerId];
-        $game->current_question = $questionProvider->getQuestion((array) $questions[$providerId]);
-        $this->update($game, ['current_question']);
+        return $questionProvider->getQuestion((array) $questions[$providerId]);
     }
 
     public function updateStatus($game, $newStatus)
@@ -190,9 +190,9 @@ class Game extends DataObject
     public function nextRound($game)
     {
         if ($game->status !== self::STATUS_QUESTION) {
+            $game->current_question = $this->getRandomQuestion($game);
             $game->status = self::STATUS_QUESTION;
             $game->last_update_timestamp = time();
-            $game->current_question = null;
             $game->round ++;
             self::update($game, ['status', 'last_update_timestamp', 'round', 'current_question']);
         }
