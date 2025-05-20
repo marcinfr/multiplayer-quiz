@@ -40,7 +40,7 @@ class DownloadCountriesData
                 }
                 $flagUrl = str_replace(['/40px-', '/20px-'], '/300px-', $flagUrl);
                 echo 'Download flag: ' . $flagUrl ."\n";
-                $image = app(\App\Models\Quiz::class)->saveImage($flagUrl, 'countries/flag_' . $i . '.jpg');
+                $image = app(\App\Models\Quiz::class)->saveImage($flagUrl, 'countries/flag_' . $i . '.png');
                 $data['flag'] = $image['path'];
 
                 $img = $cols[2]->getElementsByTagName('img')->item(0);
@@ -51,7 +51,7 @@ class DownloadCountriesData
                 $mapUrl = str_replace('/60px-', '/300px-', $mapUrl);
                 echo 'Download map: ' . $mapUrl ."\n";
 
-                $image = app(\App\Models\Quiz::class)->saveImage($mapUrl, 'countries/map_' . $i . '.jpg');
+                $image = app(\App\Models\Quiz::class)->saveImage($mapUrl, 'countries/map_' . $i . '.png');
                 $data['map'] = $image['path'];
 
                 $countryData[] = $data;

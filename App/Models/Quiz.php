@@ -105,7 +105,7 @@ class Quiz
 	{
 		if ($url) {
 			if (!$fileName) {
-				$fileName = md5($url) . time() . '.jpg';
+				$fileName = md5($url) . time() . '.png';
 			}
 
 			$options = [
@@ -143,8 +143,12 @@ class Quiz
 			$newHeight = round($newHeight);
 
 			$resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+			\imagealphablending($resizedImage, false);
+    		\imagesavealpha($resizedImage, true);
+			$transparent = imagecolorallocatealpha($resizedImage, 255, 255, 255, 127);
+			\imagefilledrectangle($resizedImage, 0, 0, $newWidth, $newHeight, $transparent);
     		\imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
-    		\imagejpeg($resizedImage, $this->getImagesDirPath() . $fileName, 90);
+    		\imagepng($resizedImage, $this->getImagesDirPath() . $fileName);
    	 		\imagedestroy($sourceImage);
     		\imagedestroy($resizedImage);
 
