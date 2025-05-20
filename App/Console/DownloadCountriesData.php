@@ -38,9 +38,8 @@ class DownloadCountriesData
                 if (strpos($flagUrl, '//') === 0) {
                     $flagUrl = 'https:' . $flagUrl;
                 }
-                $flagUrl = str_replace('/40px-', '/300px-', $flagUrl);
+                $flagUrl = str_replace(['/40px-', '/20px-'], '/300px-', $flagUrl);
                 echo 'Download flag: ' . $flagUrl ."\n";
-
                 $image = app(\App\Models\Quiz::class)->saveImage($flagUrl, 'countries/flag_' . $i . '.jpg');
                 $data['flag'] = $image['path'];
 
