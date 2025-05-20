@@ -12,7 +12,12 @@ class SaveQuiz extends \App\Controllers\AbstractController
 
         $id = $this->getRequest()->getParam('id');
         if (!Quiz::quizExists($id)) {
-            $id = max(0, array_key_last($data));
+            $id = 0;
+            foreach ($data as $quizId => $label) {
+                if (is_numeric($quizId) && $quizId > $lastId) {
+                    $id = $quizId;
+                }
+            }
             $id ++;
         }
 
