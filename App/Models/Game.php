@@ -155,6 +155,7 @@ class Game extends DataObject
             'question_list' =>  app(\App\Models\Game\QuestionProvider\QuestionLists::class),
             'math_tasks' => app(\App\Models\Game\QuestionProvider\MathTasks::class),
             'countries' => app(\App\Models\Game\QuestionProvider\Countries::class),
+            'the_most' => app(\App\Models\Game\QuestionProvider\TheMost::class),
             'ai' => app(\App\Models\Game\QuestionProvider\OpenAi::class),
         ];
     }
@@ -189,13 +190,13 @@ class Game extends DataObject
 
     public function nextRound($game)
     {
-        if ($game->status !== self::STATUS_QUESTION) {
+        //if ($game->status !== self::STATUS_QUESTION) {
             $game->current_question = $this->getRandomQuestion($game);
             $game->status = self::STATUS_QUESTION;
             $game->last_update_timestamp = time();
             $game->round ++;
             self::update($game, ['status', 'last_update_timestamp', 'round', 'current_question']);
-        }
+        //}
     }
 
     public function hasTimeElapsedFromLastUpdate($game, int $seconds)
