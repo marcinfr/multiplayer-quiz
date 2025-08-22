@@ -9,6 +9,10 @@ class QuestionForm extends \App\Controllers\AbstractController
         $quizId = $this->getRequest()->getParam("quiz");
         $id = $this->getRequest()->getParam("id");
         $question = \App\Models\Quiz::getQuestion($quizId, $id);
+        $wrongAnswers = $question['wrong_answers'] ?? [];
+        $wrongAnswers = array_pad($wrongAnswers, 3, '');
+        $question['wrong_answers'] = $wrongAnswers;
+
         $content = new \App\Block\Template('question/form.phtml',
             [
                 'quiz_id' => $quizId,

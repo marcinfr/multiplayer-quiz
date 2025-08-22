@@ -28,15 +28,43 @@ $question = $this->getData('question');
     </div>
     <div class="row">
         <label for="answer">Błędne Odpowiedzi</label>
-        <div class="input">
-            <textarea id="wrong_answer_1" name="wrong_answer[0]" required placeholder="Błędna Odpowiedź..." style="height:200px"><?= $question['wrong_answers'][0] ?? '' ?></textarea>
-            <br/>
-            <textarea id="wrong_answer_2" name="wrong_answer[1]" placeholder="Błędna Odpowiedź..." style="height:200px"><?= $question['wrong_answers'][1] ?? '' ?></textarea>
-            <br/>
-            <textarea id="wrong_answer_2" name="wrong_answer[2]" placeholder="Błędna Odpowiedź..." style="height:200px"><?= $question['wrong_answers'][2] ?? '' ?></textarea>
+        <div class="input" id="wrong_answers_list">
+            <?php $wrongAnseresCounter = 0 ?>
+            <?php foreach($question['wrong_answers'] ?? [] as $wrongAnswer): ?>
+                <div>
+                    <textarea id="wrong_answer_<?= $wrongAnseresCounter ?>" 
+                        name="wrong_answer[<?= $wrongAnseresCounter ?>]" 
+                        <?php if ($wrongAnseresCounter == 0): ?>required<?php endif ?>
+                        placeholder="Błędna Odpowiedź..." 
+                        style="height:200px"><?= $wrongAnswer ?></textarea>
+                </div>
+                <?php $wrongAnseresCounter ++ ?>
+            <?php endforeach ?>
         </div>
+    </div>
+    <div class="row">
+        <div></div>
+        <a href="#" onclick="addWrongAnser(); event.preventDefault();">Dodaj Odpowiedź</a>
     </div>
     <div class="row">
         <div></div>
         <input type="submit" value="Zapisz">
     </div>
+</form>
+<div id="wrong_answer_template" style="display: none">
+    <div>
+        <textarea id="" name="" placeholder="Błędna Odpowiedź..." style="height:200px"></textarea>
+    </div>
+</div>
+<script>
+var wrong_answers_count = <?= $wrongAnseresCounter ?>;
+function addWrongAnser()
+{
+    var wrongAnswersList = $('#wrong_answers_list');
+    var newWrongAnser = $('#wrong_answer_template').children().clone(true);
+    newWrongAnser.find("textarea").attr("id", "wrong_answer_" + wrong_answers_count);
+    newWrongAnser.find("textarea").attr("name", "wrong_answer[" + wrong_answers_count + "]");
+    wrongAnswersList.append(newWrongAnser);
+    wrong_answers_count ++;
+}
+</script>

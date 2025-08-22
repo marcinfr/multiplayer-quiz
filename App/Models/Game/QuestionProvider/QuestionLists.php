@@ -33,6 +33,9 @@ class QuestionLists
             'correct' => true,
         ]];
         $wrongAnswers = $randomQuestion['wrong_answers'] ?? [];
+        shuffle($wrongAnswers);
+        $wrongAnswers = array_slice($wrongAnswers, 0, 3);
+        
         foreach ($wrongAnswers as $answer) {
             $answers[] = [
                 'answer' => $answer

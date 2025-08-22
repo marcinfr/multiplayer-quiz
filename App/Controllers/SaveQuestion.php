@@ -17,6 +17,7 @@ class SaveQuestion extends \App\Controllers\AbstractController
                 unset($wrongAnswers[$id]);
             }
         }
+        $wrongAnswers = array_values($wrongAnswers);
 
         app(Quiz::class)->saveQuestion(
             $quizId,
