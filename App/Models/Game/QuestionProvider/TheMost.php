@@ -7,7 +7,7 @@ namespace App\Models\Game\QuestionProvider;
 
 use App\Models\Quiz;
 
-class TheMost
+class TheMost extends AbstractQuestionProvider
 {
     public $label = "Naj...";
     public $defaultPriority = 50;

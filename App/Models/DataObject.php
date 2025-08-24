@@ -51,6 +51,9 @@ class DataObject
         $update = [];
         foreach ($data as $key => $value) {
             $value = $this->prepareValueToSave($value);
+            if (is_object($value)) {
+                continue;
+            }
             $update[] = $key . '=' . $value;
         }
         $update = implode(',', $update);
@@ -60,6 +63,9 @@ class DataObject
 
     private function prepareValueToSave($value)
     {
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
         if (is_string($value)) {
             $value = $this->getConnection()->real_escape_string($value);
             $value = '"' . $value . '"';

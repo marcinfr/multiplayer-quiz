@@ -2,7 +2,7 @@
 
 namespace App\Models\Game\QuestionProvider;
 
-class MathTasks
+class MathTasks extends AbstractQuestionProvider
 {
     public $label = "Zadania matematyczne";
     public $defaultPriority = 10;

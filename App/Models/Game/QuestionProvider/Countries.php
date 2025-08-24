@@ -2,7 +2,7 @@
 
 namespace App\Models\Game\QuestionProvider;
 
-class Countries
+class Countries extends AbstractQuestionProvider
 {
     public $label = "Państwa Świata";
     public $defaultPriority = 10;

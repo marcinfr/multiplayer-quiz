@@ -7,10 +7,11 @@ namespace App\Models\Game\QuestionProvider;
 
 use App\Models\Quiz;
 
-class QuestionLists
+class QuestionLists extends AbstractQuestionProvider
 {
+    const PROVIDER_CODE = 'question_list';
+
     public $label = "Listy Pytań";
-    public $defaultPriority = 100;
 
     public function getOptionsBlock(array $params = [])
     {
@@ -23,11 +24,15 @@ class QuestionLists
         $questions = [];
         foreach ($quizIds as $quizId) {
             $quizQesitions = Quiz::getQuestions($quizId);
-            $questions = array_merge($questions, $quizQesitions);
+            foreach ($quizQesitions as $key => $question) {
+                $questionCode = $quizId . '-' . $key;
+                $questions[$questionCode] = $question;
+            }
         }
 
-        $randomQuestionId = array_rand($questions);
-        $randomQuestion = $questions[$randomQuestionId];
+        $this->excludeQuestions($questions);
+        $randomQuestionCode = array_rand($questions);
+        $randomQuestion = $questions[$randomQuestionCode];
         $answers = [[
             'answer' => $randomQuestion['answer'],
             'correct' => true,
@@ -48,10 +53,29 @@ class QuestionLists
             $questionImage = $randomQuestion['question_image']['path'];
         }
 
-        return json_encode([
+        $this->addExcludedQuestion($randomQuestionCode, 100);
+
+        return [
             'question' => $randomQuestion['question'],
             'question_image' => $questionImage ?? null,
             'answers' => $answers,
-        ]);
+        ];
+    }
+
+    private function excludeQuestions(&$questions)
+    {
+        if (empty($questions)) {
+            return $this;
+        }
+        $exculdedQuestion = $this->getExcludedQuestions();
+        $minQuestion = ceil(count($questions) / 5);
+        foreach ($exculdedQuestion as $questionCode) {
+            if (count($questions) <= $minQuestion) {
+                $this->unExcludeQuestion();
+                break;
+            }
+            unset($questions[$questionCode]);
+        }
+        return $this;
     }
 }

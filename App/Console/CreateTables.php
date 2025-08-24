@@ -15,7 +15,8 @@ class CreateTables
                 'current_question text',
                 'status varchar(255)',
                 'last_update_timestamp int unsigned',
-                'config text'
+                'config text',
+                'questions_history text'
             ]
         );
 

@@ -84,7 +84,8 @@ class Game extends DataObject
             $sql = 'select * from game where id = ' . $gameId;
             $game = $connection->query($sql)->fetch_object();
             if ($game) {
-                $game->config = json_decode($game->config);
+                $game->config = json_decode((string) $game->config);
+                $game->questions_history = json_decode((string) $game->questions_history, true) ?? [];
                 $this->games[$gameId] = $game;
             }
         }
@@ -164,19 +165,21 @@ class Game extends DataObject
     {
         $questions = (array) $game->config->questions;
         $sumOfPriorities = 0;
-        foreach ($questions as $providerId => $config) {
+        foreach ($questions as $providerCode => $config) {
             $sumOfPriorities += $config->priority ?? 0;
             $config->priority = $sumOfPriorities;
         }
         $random = rand(1, $sumOfPriorities);
-        foreach ($questions as $providerId => $config) {
+        foreach ($questions as $providerCode => $config) {
             if ($random <= $config->priority) {
                 break;
             }
         }
         $questionProviders = $this->getQuestionProviders();
-        $questionProvider = $questionProviders[$providerId];
-        return $questionProvider->getQuestion((array) $questions[$providerId]);
+        $questionProvider = $questionProviders[$providerCode];
+        $questionProvider->setProviderCode($providerCode);
+        $questionProvider->setGame($game);
+        return $questionProvider->getQuestion((array) $questions[$providerCode]);
     }
 
     public function updateStatus($game, $newStatus)
@@ -190,13 +193,11 @@ class Game extends DataObject
 
     public function nextRound($game)
     {
-        //if ($game->status !== self::STATUS_QUESTION) {
-            $game->current_question = $this->getRandomQuestion($game);
-            $game->status = self::STATUS_QUESTION;
-            $game->last_update_timestamp = time();
-            $game->round ++;
-            self::update($game, ['status', 'last_update_timestamp', 'round', 'current_question']);
-        //}
+        $game->current_question = $this->getRandomQuestion($game);
+        $game->status = self::STATUS_QUESTION;
+        $game->last_update_timestamp = time();
+        $game->round ++;
+        self::update($game);
     }
 
     public function hasTimeElapsedFromLastUpdate($game, int $seconds)
