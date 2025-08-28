@@ -418,6 +418,56 @@
   color: deepskyblue;
 }
 
+.image-input {
+  display: flex; 
+  align-items: center; 
+  gap: 5px;
+}
+
+.modal-overlay {
+  position: fixed;        /* zawsze widoczny na ekranie */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4); /* przyciemnione tło */
+  display: none;           /* wycentrowanie modala */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 80%;
+  height: 90vh;            /* wysokość prawie całego ekranu */
+  display: flex;
+  flex-direction: column;  /* kolumnowe ułożenie zawartości */
+  overflow-y: auto;        /* włącz scroll pionowy, gdy zawartość się nie mieści */
+}
+
+#images-result-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+#images-result-container img {
+    flex: 0 1 200px;    /* szerokość ~200px */
+    max-width: 100%;
+    height: auto;
+}
+
+#image-query-input {
+    min-height: 100px; /* minimalna wysokość 100px */
+    width: 100%;       /* opcjonalnie dopasowanie do szerokości */
+    resize: vertical;  /* pozwala użytkownikowi zmieniać wysokość pionowo */
+    padding: 8px;      /* opcjonalnie wewnętrzny margines */
+}
+
 @media screen and (max-width: 600px) {
   .col-25, .col-75, input[type=submit] {
     width: 100%;

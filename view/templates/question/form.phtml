@@ -14,10 +14,11 @@ $question = $this->getData('question');
         </div>
         <div class="input">
             <?php $questionImage = $question['question_image'] ?? false ?>
-            <input type="text" placeholder="Image URL.." name="question-image" value="<?= $questionImage['url'] ?? '' ?>">
-            <?php if ($questionImage): ?>
-                <img src="<?= url('media/' . ($questionImage['path'] ?? '')) ?>">
-            <?php endif ?>
+            <div class="image-input">
+                <input id="image-input" type="text" placeholder="Image URL.." name="question-image" value="<?= $questionImage['url'] ?? '' ?>">
+                <button onclick="showImageFinder(); event.preventDefault();">🔍</button>
+            </div>
+            <img id="image-thumbnail" <?php if (!$questionImage): ?>style="display:none"<?php endif ?> src="<?= url('media/' . ($questionImage['path'] ?? '')) ?>">
         </div>
     </div>
     <div class="row">
@@ -56,6 +57,15 @@ $question = $this->getData('question');
         <textarea id="" name="" placeholder="Błędna Odpowiedź..." style="height:200px"></textarea>
     </div>
 </div>
+<div id="image-finder" class="modal-overlay">
+    <div class="modal-box">
+        <textarea id="image-query-input"></textarea>
+        <a class="button primary" onclick="searchImages(); event.preventDefault();">Szukaj</a>
+        <div id="images-loader" style="display:none;">Ładowanie...</div>
+        <div id="images-result-container"></div>
+        <a class="button" id="closeModal" onclick="closeImageFinder(); event.preventDefault();">Zamknij</a>
+    </div>
+</div>
 <script>
 var wrong_answers_count = <?= $wrongAnseresCounter ?>;
 function addWrongAnser()
@@ -67,4 +77,56 @@ function addWrongAnser()
     wrongAnswersList.append(newWrongAnser);
     wrong_answers_count ++;
 }
+function showImageFinder()
+{
+    const modal = $("#image-finder");
+    modal.css("display", "flex");
+}
+function closeImageFinder()
+{
+    const modal = $("#image-finder");
+    modal.css("display", "none");
+}
+function searchImages()
+{
+    const query = $("#image-query-input").val();
+    if (query) {
+        
+        $.ajax({
+            type : 'GET',
+            url : 'question/ImageFinder?query=' + query,
+            dataType: 'json',
+            beforeSend: function() {
+                $("#images-loader").show();
+            },
+            success: function(response) {
+                const resultContainer = $("#images-result-container");
+                resultContainer.empty();
+                if (response.error) {
+                    resultContainer.append('<p>' + response.error + '</p>');
+                } else {
+                    response.items.forEach(item => {
+                        resultContainer.append('<img src="' + item.thumbnail + '" data-image-url="' + item.url + '" />');
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('cos nie zadzialalo');
+            },
+            complete: function() {
+                $("#images-loader").hide();
+            },
+        });
+    }
+}
+
+const resultContainer = $("#images-result-container");
+resultContainer.on("click", "img", function() {
+    const imageUrl = $(this).data("image-url"); // pobranie wartości data-image-url
+    const thumbnailUrl = $(this).attr("src");
+    $("#image-input").val(imageUrl);
+    $("#image-thumbnail").attr("src", thumbnailUrl);
+    closeImageFinder();
+});
+
 </script>

@@ -9,4 +9,8 @@ return [
         'PASSWORD' => 'secret',
         'DATABASE'=> 'quiz',
     ],
+    'GOOGLE' => [
+        'API_KEY' => '',
+        'SEARCH_ENGINE_ID' => '',
+    ],
 ];
