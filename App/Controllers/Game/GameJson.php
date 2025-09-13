@@ -109,7 +109,11 @@ class GameJson extends \App\Controllers\AbstractController
             || $this->getGame()->status == Game::STATUS_WAITING_FOR_QUESTION
         ) {
             if ($this->isGameEnded()) {
-                $message = 'Gra zakończona!';
+                if (app(\App\Models\Player::class)->getCurrentPosition($this->getGame(), $this->getCurrentPlayer()) < 4) {
+                    $message = ' <b>Wygrałeś przytalasa od Aleksa!</b>';
+                } else {
+                    $message = 'Gra zakończona!';
+                }
             } else {
                 $message = 'Gotowy na następne pytanie?';
             }
