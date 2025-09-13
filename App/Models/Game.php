@@ -204,4 +204,19 @@ class Game extends DataObject
     {
         return time() - $seconds > $game->last_update_timestamp;
     }
+
+    public function getGameConfig($game, $configCode)
+    {
+        $gameConfig = (array) $game->config->game;
+        return $gameConfig[$configCode] ?? null;
+    }
+
+    public function isGameEnd($game)
+    {
+        $roundsQty = $this->getGameConfig($game, 'rounds-qty');
+        if ($roundsQty && $game->round >= $roundsQty) {
+            return true;
+        }
+        return false;
+    }
 }

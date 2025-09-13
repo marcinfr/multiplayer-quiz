@@ -73,4 +73,21 @@ class Player extends DataObject
 
         return $options;
     }
+
+    public function getCurrentPosition($game, $player) {
+        $players = app(Game::class)->getAllPlayers($game);
+        $position = 1;
+        $totalPoints = $player->total_points;
+        foreach($players as $p) {
+            if ($p->id == $player->id) {
+                continue;
+            }
+            if ($p->total_points > $totalPoints) {
+                $position++;
+            } else {
+                return $position;
+            }
+        }
+        return $position;
+    }
 } 

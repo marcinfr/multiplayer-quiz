@@ -16,6 +16,7 @@ class Create extends \App\Controllers\AbstractController
         
         $config = [
             'questions' => $questions,
+            'game' => $this->getRequest()->getParam('config', []),
         ];
 
         $player = app(\App\Models\Player::class)->getCurrentPlayer();

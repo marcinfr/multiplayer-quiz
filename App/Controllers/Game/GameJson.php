@@ -106,15 +106,27 @@ class GameJson extends \App\Controllers\AbstractController
     {
         $this->data['section-result'] = '';
         if ($this->getGame()->status == Game::STATUS_RESULT
-            || $this->getGame()->status == Game::STATUS_WAITING_FOR_QUESTION) {
+            || $this->getGame()->status == Game::STATUS_WAITING_FOR_QUESTION
+        ) {
+            if ($this->isGameEnded()) {
+                $message = 'Gra zakończona!';
+            } else {
+                $message = 'Gotowy na następne pytanie?';
+            }
             $resultBlock = new \App\Block\Template('game/result.phtml', [
                 'game' => $this->getGame(),
                 'player' => $this->getCurrentPlayer(),
                 'players' => $this->getPlayers(),
-                'message' => 'Gotowy na następne pytanie?',
+                'is_game_ended' => $this->isGameEnded(),
+                'message' => $message,
             ]);
             $this->data['section-result'] = $resultBlock->getHtml();
         }
+    }
+
+    private function isGameEnded()
+    {
+        return  app(Game::class)->isGameEnd($this->getGame());
     }
 
     private function isRoundEnded()

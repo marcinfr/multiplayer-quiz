@@ -1,11 +1,12 @@
 <?php
 $game = $this->getData('game');
 $player = $this->getData('player');
+$isGameEnd = (bool) $this->getData('is_game_ended');
 ?>
 <div class="result-message">
     <?= $this->getData('message') ?>
 </div>
-<?php if ($player->view_type !== \App\Models\Player::VIEW_TYPE_HOST): ?>
+<?php if ($player->view_type !== \App\Models\Player::VIEW_TYPE_HOST && !$isGameEnd): ?>
     <a href="#" onclick="action('setPlayerReady')" id="button-ready" class="<?= !$player->has_answer ? 'ready' : ''?>">Gotowy</a>
 <?php endif ?>
 <?php if ($player->view_type !== \App\Models\Player::VIEW_TYPE_CONTROLLER): ?>
@@ -21,11 +22,24 @@ $player = $this->getData('player');
                 }
             ?>
             <div class="player-row <?= $class ?? '' ?>">
-                <div class="name"><?= $player->name ?>
-                    <?php if ($player->has_answer): ?>
-                        <span class="pending">(Oczekuje)</span>
-                    <?php else: ?>
-                        <span class="ready">(Gotowy)</span>
+                <div class="name">
+                    <?php if ($isGameEnd): ?>
+                        <?php $position = app(\App\Models\Player::class)->getCurrentPosition($game, $player) ?>
+                        <?php if ($position == 1): ?>
+                            <i class="fas fa-trophy" style="color: gold; font-size: 48px;"></i>
+                        <?php elseif ($position == 2): ?>
+                            <i class="fas fa-trophy" style="color: silver; font-size: 40px;"></i>
+                        <?php elseif ($position == 3): ?>
+                            <i class="fas fa-trophy" style="color: brown; font-size: 35px;"></i>
+                        <?php endif ?>
+                    <?php endif ?>
+                    <?= $player->name ?>
+                    <?php if (!$isGameEnd): ?>
+                        <?php if ($player->has_answer): ?>
+                            <span class="pending">(Oczekuje)</span>
+                        <?php else: ?>
+                            <span class="ready">(Gotowy)</span>
+                        <?php endif ?>
                     <?php endif ?>
                 </div>
                 <div class="accuracy">

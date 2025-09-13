@@ -12,7 +12,11 @@
             </div>
         </div>
         <div id="game-config"  style="display:none">
-            config!!
+            <label for="config-rounds-qty">Ilość Rund</label>
+            <input type="text"
+                   id="config-rounds-qty"
+                   name="config[rounds-qty]"
+                   value="10">
         </div>
         <?php
             $providers = app(\App\Models\Game::class)->getQuestionProviders();
