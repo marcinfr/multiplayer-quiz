@@ -1,35 +1,58 @@
-<form id="form" method="post" action="create">
-    <input type="submit" value="Stwórz" id="button-ready">
-    <?php
-        $providers = app(\App\Models\Game::class)->getQuestionProviders();
-    ?>
-    <div id="quiz-checkboxes">
-        <?php foreach ($providers as $providerId => $provider): ?>
-            <input type="checkbox" 
-                id="provider-<?= $providerId ?>" 
-                name="questions[<?= $providerId ?>][selected]" 
-                value="1"
-                onclick="providerSelected(this)">
-            <label for="provider-<?= $providerId ?>"><?= $provider->label ?></label>
-            <div id="provider-<?= $providerId ?>-options" class="question-provider-options" style="display:none">
-                <div class="question-set-priority">
-                    <div class="button" onclick="updatePriority('<?= $providerId ?>', -10)">-10</div>
-                    <div class="button" onclick="updatePriority('<?= $providerId ?>', -1)">-</div>
-                    <div class="value">
-                        Priorytet:
-                        <input type="text" id="priority-<?= $providerId ?>" name="questions[<?= $providerId ?>][priority]" value="<?= $provider->defaultPriority ?>" readonly>
-                    </div>
-                    <div class="button" onclick="updatePriority('<?= $providerId ?>', 1)">+</div>
-                    <div class="button" onclick="updatePriority('<?= $providerId ?>', 10)">+10</div>
-                </div>
-                <?php if ($optionsBlock = $provider->getOptionsBlock(['provider_id' => $providerId])): ?>
-                    <?= $optionsBlock->getHtml() ?>
-                <?php endif ?>
+<div id="game-creator">
+    <form id="form" method="post" action="create">
+        <div id="top-buttons-container">
+            <input type="submit" value="Stwórz" id="button-ready">
+            <div id="game-config-container">
+                <input type="checkbox" 
+                        id="game-config-checkbox" 
+                        name="" 
+                        value="0"
+                        onclick="toogleGameConfig(this)">
+                <label for="game-config-checkbox"><i class="fa-solid fa-gear"></i></label>
             </div>
-        <?php endforeach ?>
-    </div>
-</form>
+        </div>
+        <div id="game-config"  style="display:none">
+            config!!
+        </div>
+        <?php
+            $providers = app(\App\Models\Game::class)->getQuestionProviders();
+        ?>
+        <div id="quiz-checkboxes">
+            <?php foreach ($providers as $providerId => $provider): ?>
+                <input type="checkbox" 
+                    id="provider-<?= $providerId ?>" 
+                    name="questions[<?= $providerId ?>][selected]" 
+                    value="1"
+                    onclick="providerSelected(this)">
+                <label for="provider-<?= $providerId ?>"><?= $provider->label ?></label>
+                <div id="provider-<?= $providerId ?>-options" class="question-provider-options" style="display:none">
+                    <div class="question-set-priority">
+                        <div class="button" onclick="updatePriority('<?= $providerId ?>', -10)">-10</div>
+                        <div class="button" onclick="updatePriority('<?= $providerId ?>', -1)">-</div>
+                        <div class="value">
+                            Priorytet:
+                            <input type="text" id="priority-<?= $providerId ?>" name="questions[<?= $providerId ?>][priority]" value="<?= $provider->defaultPriority ?>" readonly>
+                        </div>
+                        <div class="button" onclick="updatePriority('<?= $providerId ?>', 1)">+</div>
+                        <div class="button" onclick="updatePriority('<?= $providerId ?>', 10)">+10</div>
+                    </div>
+                    <?php if ($optionsBlock = $provider->getOptionsBlock(['provider_id' => $providerId])): ?>
+                        <?= $optionsBlock->getHtml() ?>
+                    <?php endif ?>
+                </div>
+            <?php endforeach ?>
+        </div>
+    </form>
+</div>
 <script>
+function toogleGameConfig(checkbox) {
+    let gameConfigContainer = $("#game-config");
+    if (checkbox.checked) {
+        gameConfigContainer.show();
+    } else {
+        gameConfigContainer.hide();
+    }
+}
 function providerSelected(elem) {
     let optionsContenerId = elem.id + "-options";
     if (elem.checked) {
