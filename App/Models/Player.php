@@ -66,28 +66,10 @@ class Player extends DataObject
             ],
         ];
 
-        $selected = self::VIEW_TYPE_NORMAL;
         $viewType = $player->view_type ?? self::VIEW_TYPE_NORMAL;
         $selected = $options[$viewType] ?  $viewType : self::VIEW_TYPE_NORMAL;
         $options[$selected]['selected'] = true;
 
         return $options;
-    }
-
-    public function getCurrentPosition($game, $player) {
-        $players = app(Game::class)->getAllPlayers($game);
-        $position = 1;
-        $totalPoints = $player->total_points;
-        foreach($players as $p) {
-            if ($p->id == $player->id) {
-                continue;
-            }
-            if ($p->total_points > $totalPoints) {
-                $position++;
-            } else {
-                return $position;
-            }
-        }
-        return $position;
     }
 } 

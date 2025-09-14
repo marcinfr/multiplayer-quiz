@@ -219,4 +219,19 @@ class Game extends DataObject
         }
         return false;
     }
+
+    public function setPlayerRanks($game)
+    {
+        $players = $this->getPlayers($game);
+        $rank = 0;
+        $points = null;
+        foreach ($players as $player) {
+            if ($points === null || $player->total_points > $points) {
+                $rank++;
+            }
+            $player->player_rank = $rank;
+            $points = $player->total_points;
+            app(Player::class)->update($player, ['player_rank']);
+        }
+    }
 }

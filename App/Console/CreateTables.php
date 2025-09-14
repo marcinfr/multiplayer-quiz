@@ -33,6 +33,7 @@ class CreateTables
                 'answered_questions_qty int unsigned default 0',
                 'correct_answered_questions_qty int unsigned default 0',
                 'total_points smallint unsigned default 0',
+                'player_rank smallint unsigned default null',
                 'last_activity_timestamp int unsigned',
                 'view_type varchar(255)',
             ]

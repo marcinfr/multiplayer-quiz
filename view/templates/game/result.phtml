@@ -24,12 +24,11 @@ $isGameEnd = (bool) $this->getData('is_game_ended');
             <div class="player-row <?= $class ?? '' ?>">
                 <div class="name">
                     <?php if ($isGameEnd): ?>
-                        <?php $position = app(\App\Models\Player::class)->getCurrentPosition($game, $player) ?>
-                        <?php if ($position == 1): ?>
+                        <?php if ($player->player_rank == 1): ?>
                             <i class="fas fa-trophy" style="color: gold; font-size: 48px;"></i>
-                        <?php elseif ($position == 2): ?>
+                        <?php elseif ($player->player_rank == 2): ?>
                             <i class="fas fa-trophy" style="color: silver; font-size: 40px;"></i>
-                        <?php elseif ($position == 3): ?>
+                        <?php elseif ($player->player_rank == 3): ?>
                             <i class="fas fa-trophy" style="color: brown; font-size: 35px;"></i>
                         <?php endif ?>
                     <?php endif ?>
