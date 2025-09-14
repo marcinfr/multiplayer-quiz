@@ -69,7 +69,7 @@ class GameJson extends \App\Controllers\AbstractController
             }
 
             if ($this->getGame()->status == Game::STATUS_ANSWER
-                && ($question['show-suggested'] ?? false)
+                && $this->canShowCorrectAnswer($question)
                 && $player->has_answer
                 && $isCorrect
                 && $player->last_selected_answer != $id
@@ -120,7 +120,26 @@ class GameJson extends \App\Controllers\AbstractController
                 'is_game_ended' => $this->isGameEnded(),
                 'message' => $message,
             ]);
-            $this->data['section-result'] = $resultBlock->getHtml();
+            $result = $resultBlock->getHtml();
+
+            if ($this->isGameEnded() && $this->getCurrentPlayer()->player_rank == 1) {
+                $fireworks = new \App\Block\Template('game/fireworks.phtml', []);
+                $result .= $fireworks->getHtml();
+            }
+
+            $this->data['section-result'] = $result;
+        }
+    }
+
+    public function canShowCorrectAnswer($question)
+    {
+        $showCorrectAnswer = app(Game::class)->getGameConfig($this->getGame(), 'show-correct-answer');
+        if ($showCorrectAnswer == 1) {
+            return true;
+        } elseif (($question['ai'] ?? false) && $showCorrectAnswer == 2) {
+            return true;
+        } else {
+            return false;
         }
     }
 

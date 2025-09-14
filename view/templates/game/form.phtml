@@ -17,6 +17,14 @@
                    id="config-rounds-qty"
                    name="config[rounds-qty]"
                    value="10">
+            <label for="config-rounds-qty">Pokaż poprawną odpowiedź</label>
+            <select
+                   id="show-correct-answer"
+                   name="config[show-correct-answer]">
+                <option value="0" selected>Nie</option>
+                <option value="1">Tak</option>
+                <option value="2">Tylko do pytań AI</option>
+            </select>
         </div>
         <?php
             $providers = app(\App\Models\Game::class)->getQuestionProviders();

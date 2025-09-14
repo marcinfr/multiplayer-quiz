@@ -41,6 +41,7 @@ class OpenAi extends QuestionLists
                 $aiQuestion = json_decode($result, true);
                 if ($this->validateQuestion($aiQuestion)) {
                     $aiQuestion['question-prefix'] = '<span class="ai-question-label">[AI]</span>';
+                    $aiQuestion['ai'] = true;
                     $aiQuestion['question'] =  $aiQuestion['question'];
                     $aiQuestion['save_as'] = 'ai-generated';
                     $aiQuestion['show-suggested'] = true;
