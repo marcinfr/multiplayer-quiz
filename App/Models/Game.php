@@ -51,7 +51,9 @@ class Game extends DataObject
             $player->total_points = 0;
             $player->player_rank = null;
             $player->has_answer = null;
-            app(Player::class)->update($player, ['total_points', 'player_rank', 'has_answer']);
+            $player->answered_questions_qty = 0;
+            $player->correct_answered_questions_qty = 0;
+            app(Player::class)->update($player);
         }
         self::update($game, ['round', 'current_question']);
     }
@@ -212,7 +214,7 @@ class Game extends DataObject
         $game->status = self::STATUS_QUESTION;
         $game->last_update_timestamp = time();
         $game->round ++;
-        self::update($game);
+        self::update($game, ['current_question', 'status', 'last_update_timestamp', 'round']);
     }
 
     public function hasTimeElapsedFromLastUpdate($game, int $seconds)

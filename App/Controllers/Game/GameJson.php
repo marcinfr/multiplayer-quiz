@@ -195,9 +195,7 @@ class GameJson extends \App\Controllers\AbstractController
                 break;
             case Game::STATUS_RESULT:
                 if ($this->allPlayersReady() && $this->getCurrentPlayer()->is_host) {
-                    if (!$this->isGameEnded()) {
-                        app(Game::class)->updateStatus($this->getGame(), Game::STATUS_WAITING_FOR_QUESTION);
-                    }
+                    app(Game::class)->updateStatus($this->getGame(), Game::STATUS_WAITING_FOR_QUESTION);
                     //app(Game::class)->nextRound($this->getGame());
                     $command = '/usr/bin/php ' . ROOT_PATH . '/bin/console generate-question ' . (int) $this->getGame()->id;
                     exec($command . ' > /dev/null 2>&1 &');
