@@ -42,6 +42,20 @@ class Game extends DataObject
         return $this->activeGames;
     }
 
+    public function reset($game)
+    {
+        $game->round = 0;
+        $game->current_question = null;
+        $players = $this->getPlayers($game);
+        foreach ($players as $player) {
+            $player->total_points = 0;
+            $player->player_rank = null;
+            $player->has_answer = null;
+            app(Player::class)->update($player, ['total_points', 'player_rank', 'has_answer']);
+        }
+        self::update($game, ['round', 'current_question']);
+    }
+
     /**
      * @TODO napisac to ladniej
      */

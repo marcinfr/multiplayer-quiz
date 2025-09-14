@@ -1,15 +1,32 @@
 <?php
 $game = $this->getData('game');
-$player = $this->getData('player');
+$currentPlayer = $this->getData('player');
 $isGameEnd = (bool) $this->getData('is_game_ended');
 ?>
 <div class="result-message">
+    <?php if ($isGameEnd): ?>
+        <?php if ($currentPlayer->player_rank == 1): ?>
+            <i class="fas fa-trophy" style="color: gold; font-size: 48px;"></i><br/><br/>
+        <?php elseif ($currentPlayer->player_rank == 2): ?>
+            <i class="fas fa-trophy" style="color: silver; font-size: 40px;"></i><br/><br/>
+        <?php elseif ($currentPlayer->player_rank == 3): ?>
+            <i class="fas fa-trophy" style="color: brown; font-size: 35px;"></i><br/><br/>
+        <?php endif ?>
+    <?php endif ?>
     <?= $this->getData('message') ?>
 </div>
-<?php if ($player->view_type !== \App\Models\Player::VIEW_TYPE_HOST && !$isGameEnd): ?>
-    <a href="#" onclick="action('setPlayerReady')" id="button-ready" class="<?= !$player->has_answer ? 'ready' : ''?>">Gotowy</a>
+<?php if ($currentPlayer->view_type !== \App\Models\Player::VIEW_TYPE_HOST): ?>
+    <?php if (!$isGameEnd): ?>
+        <a href="#" onclick="action('setPlayerReady')" id="button-ready" class="<?= !$currentPlayer->has_answer ? 'ready' : ''?>">
+            <?php if ($currentPlayer->has_answer): ?>Gotowy<?php else: ?>Oczekuje<?php endif ?>
+        </a>
+    <?php else: ?>
+        <a href="#" onclick="action('setPlayerReady')" id="button-ready" class="<?= !$currentPlayer->has_answer ? 'ready' : ''?>">
+            <?php if ($currentPlayer->has_answer): ?>Zagraj ponownie<?php else: ?>Oczekuje<?php endif ?>
+        </a>
+    <?php endif ?>
 <?php endif ?>
-<?php if ($player->view_type !== \App\Models\Player::VIEW_TYPE_CONTROLLER): ?>
+<?php if ($currentPlayer->view_type !== \App\Models\Player::VIEW_TYPE_CONTROLLER): ?>
     <div id="players-list">
         <?php foreach($this->getData('players') as $player): ?>
             <?php

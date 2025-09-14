@@ -109,7 +109,11 @@ class GameJson extends \App\Controllers\AbstractController
             || $this->getGame()->status == Game::STATUS_WAITING_FOR_QUESTION
         ) {
             if ($this->isGameEnded()) {
-                $message = 'Gra zakończona!';
+                if ($this->getCurrentPlayer()->player_rank == 1) {
+                    $message = 'Gratulacje! Wygrałeś tę grę!';
+                } else {
+                    $message = 'Gra zakończona! Zająłeś ' . $this->getCurrentPlayer()->player_rank . ' miejsce.';
+                }
             } else {
                 $message = 'Gotowy na następne pytanie?';
             }
@@ -122,7 +126,10 @@ class GameJson extends \App\Controllers\AbstractController
             ]);
             $result = $resultBlock->getHtml();
 
-            if ($this->isGameEnded() && $this->getCurrentPlayer()->player_rank == 1) {
+            if ($this->isGameEnded()
+                && $this->getCurrentPlayer()->player_rank == 1
+                && $this->getCurrentPlayer()->last_game_status != Game::STATUS_RESULT
+            ) {
                 $fireworks = new \App\Block\Template('game/fireworks.phtml', []);
                 $result .= $fireworks->getHtml();
             }
@@ -188,7 +195,9 @@ class GameJson extends \App\Controllers\AbstractController
                 break;
             case Game::STATUS_RESULT:
                 if ($this->allPlayersReady() && $this->getCurrentPlayer()->is_host) {
-                    app(Game::class)->updateStatus($this->getGame(), Game::STATUS_WAITING_FOR_QUESTION);
+                    if (!$this->isGameEnded()) {
+                        app(Game::class)->updateStatus($this->getGame(), Game::STATUS_WAITING_FOR_QUESTION);
+                    }
                     //app(Game::class)->nextRound($this->getGame());
                     $command = '/usr/bin/php ' . ROOT_PATH . '/bin/console generate-question ' . (int) $this->getGame()->id;
                     exec($command . ' > /dev/null 2>&1 &');
@@ -201,13 +210,15 @@ class GameJson extends \App\Controllers\AbstractController
     {
         /** init host player, only host player can generate questions */
         app(Game::class)->getHostPlayer($this->getGame());
-        $player = $this->getCurrentPlayer();
-        $player->last_activity_timestamp = time();
-        app(Player::class)->update($player, ['last_activity_timestamp']);
 
         $this->updateGameStatus();
         $this->setQuestion();
         $this->setResult();
+
+        $player = $this->getCurrentPlayer();
+        $player->last_activity_timestamp = time();
+        $player->last_game_status = $this->getGame()->status;
+        app(Player::class)->update($player, ['last_activity_timestamp', 'last_game_status']);
 
         $this->data['hash'] = md5(json_encode($this->data));
         return app(\App\Response\Json::class)->setJson($this->data);

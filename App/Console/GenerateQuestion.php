@@ -14,6 +14,10 @@ class GenerateQuestion
 
         $game = app(Game::class)->getGame($gameId);
         if ($game) {
+            if (app(Game::class)->isGameEnd($game)) {
+                app(Game::class)->reset($game);
+            }
+
             app(Game::class)->nextRound($game);
         }
     }

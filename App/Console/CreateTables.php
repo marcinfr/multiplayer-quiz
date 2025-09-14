@@ -36,6 +36,7 @@ class CreateTables
                 'player_rank smallint unsigned default null',
                 'last_activity_timestamp int unsigned',
                 'view_type varchar(255)',
+                'last_game_status varchar(255)'
             ]
         );
     }
