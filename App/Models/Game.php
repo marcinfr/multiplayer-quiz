@@ -226,7 +226,7 @@ class Game extends DataObject
         $rank = 0;
         $points = null;
         foreach ($players as $player) {
-            if ($points === null || $player->total_points > $points) {
+            if ($points === null || $player->total_points < $points) {
                 $rank++;
             }
             $player->player_rank = $rank;
