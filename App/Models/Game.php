@@ -125,8 +125,9 @@ class Game extends DataObject
             $game->all_players = [];
             $db = app(\App\DB::class);
             $connection = $db->getConnection();
+            $time = time() - 30;
 
-            $sql = 'select * from player where game_id = ' . $game->id;
+            $sql = 'select * from player where game_id = ' . $game->id . ' and last_activity_timestamp > ' . $time;
             $sql .= ' order by total_points DESC';
             $result = $connection->query($sql);
             while ($player = $result->fetch_object()) {
