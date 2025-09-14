@@ -20,7 +20,7 @@ class Game extends DataObject
         if ($this->activeGames == null) {
             $db = app(\App\Db::class);
             $connection = $db->getConnection();
-            $time = time() - 30;
+            $time = time() - 10;
 
             $stmt = $connection->prepare("SELECT game_id FROM player WHERE last_activity_timestamp > ? and game_id is not NULL");
             $stmt->bind_param("i", $time);
@@ -125,7 +125,7 @@ class Game extends DataObject
             $game->all_players = [];
             $db = app(\App\DB::class);
             $connection = $db->getConnection();
-            $time = time() - 30;
+            $time = time() - 10;
 
             $sql = 'select * from player where game_id = ' . $game->id . ' and last_activity_timestamp > ' . $time;
             $sql .= ' order by total_points DESC';
