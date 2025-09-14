@@ -50,4 +50,9 @@ abstract class AbstractQuestionProvider
         }
         return $this;
     }
+
+    public function validateConfig($config)
+    {
+        return true;
+    }
 }

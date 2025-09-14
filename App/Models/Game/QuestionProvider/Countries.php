@@ -100,4 +100,12 @@ class Countries extends AbstractQuestionProvider
                 ];
         }
     }
+
+    public function validateConfig($config)
+    {
+        if (empty($config['options']) || !is_array($config['options'])) {
+            return false;
+        }
+        return true;
+    }
 }

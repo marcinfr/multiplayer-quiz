@@ -78,4 +78,12 @@ class QuestionLists extends AbstractQuestionProvider
         }
         return $this;
     }
+
+    public function validateConfig($config)
+    {
+        if (empty($config['options']) || !is_array($config['options'])) {
+            return false;
+        }
+        return true;
+    }
 }

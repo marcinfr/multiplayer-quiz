@@ -7,13 +7,31 @@ class Create extends \App\Controllers\AbstractController
     public function execute()
     {
         $questions = $this->getRequest()->getParam('questions');
+        $questionProviders = app(\App\Models\Game::class)->getQuestionProviders();
         foreach($questions as $providerCode => $config) {
+
+            if (!isset($questionProviders[$providerCode])) {
+                unset($questions[$providerCode]);
+                continue;
+            }
+
+            $questionProvider = $questionProviders[$providerCode];
+            if (!$questionProvider->validateConfig($config)) {
+                unset($questions[$providerCode]);
+                continue;
+            }
+
             $isSelected = $config['selected'] ?? false;
             if (!$isSelected) {
                 unset($questions[$providerCode]);
             }
         }
-        
+
+        if (empty($questions)) {
+            return app(\App\Response\Redirect::class)
+                ->setUrl('form');
+        }
+
         $config = [
             'questions' => $questions,
             'game' => $this->getRequest()->getParam('config', []),
