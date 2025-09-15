@@ -127,11 +127,12 @@ class GameJson extends \App\Controllers\AbstractController
             $result = $resultBlock->getHtml();
 
             if ($this->isGameEnded()
+                && $this->getGame()->status == Game::STATUS_RESULT
                 && $this->getCurrentPlayer()->player_rank == 1
                 && $this->getCurrentPlayer()->last_game_status != Game::STATUS_RESULT
             ) {
-                $fireworks = new \App\Block\Template('game/fireworks.phtml', []);
-                $result .= $fireworks->getHtml();
+                $confetti = new \App\Block\Template('game/confetti.phtml', []);
+                $result .= $confetti->getHtml();
             }
 
             $this->data['section-result'] = $result;
